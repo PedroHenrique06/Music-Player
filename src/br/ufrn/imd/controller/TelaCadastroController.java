@@ -28,32 +28,24 @@ public class TelaCadastroController {
     @FXML
     private void handleRegisterButtonAction(ActionEvent actionEvent) {
     	
-    	System.out.println("Inside handleRegister");
         // Lidar com o evento de clique do botão de login
-    	
           
         String username = usernameField.getText();
         String password = passwordField.getText();
        	
-        
-     // Colocar o nome e a senha em um arquivo
-     
-		String nomeDiretorio = "usuarios";
-		String linha = username + " " + password; 
+        // Colocar o nome e a senha em um arquivo
+		String line = username + " " + password; 
 		
-		Diretorio diretorio = new Diretorio(nomeDiretorio);
+		Diretorio diretorio = new Diretorio("usuarios");
 		
-		if(diretorio.criarDiretorio()) {
+		if(diretorio.ehValido()) {
 			
-			String caminho = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/" + nomeDiretorio + "/logins.txt";
-			
+			String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
 			try {
-				
-				FileWriter file = new FileWriter(caminho, true);
+				FileWriter file = new FileWriter(path, true);
 				
 				PrintWriter writer = new PrintWriter(file);
-				writer.printf(linha + "\n");
-				System.out.println("Mensagem gravada com sucesso!");
+				writer.printf(line + "\n");
 				writer.close();
 				
 			} catch (IOException e) {
@@ -65,7 +57,6 @@ public class TelaCadastroController {
 			
 			
 		}
-		
 		
 	}
                      

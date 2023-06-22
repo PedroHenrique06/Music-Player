@@ -1,16 +1,21 @@
 package br.ufrn.imd.controller;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 
 public class TelaLoginController {
@@ -38,30 +43,62 @@ public class TelaLoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
-        System.out.println("Printar dentro de função funciona!!!");
-        
-       if(username.equals("admin")) {
-    	   try {
-               FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
-               Parent root = loader.load();
-               TelaAppController TelaAppController = loader.getController();
+        // Pegar os usuarios existentes na base de dados
+        try {
+        	String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
+        	InputStream is = new FileInputStream(path); // bytes
+			InputStreamReader isr = new InputStreamReader(is); // char
+    		BufferedReader br = new BufferedReader(isr); // string
+    		String loginPasswordLine = br.readLine();
+    		
+    		while(loginPasswordLine != null){
+    			// Crie um objeto StringTokenizer para tokenizar a String
+                StringTokenizer tokenizer = new StringTokenizer(loginPasswordLine);
+                
+                // Lista que guardará o usuário e a senha atuais
+                ArrayList<String> usernameAndPassword = new ArrayList<>();
+                
+                // Adiociona usuário e senha ao array
+                while (tokenizer.hasMoreTokens()) {
+                    usernameAndPassword.add(tokenizer.nextToken());
+                }
+                
+                // Compara com o que o usuario que está tentando fazer login	
+	    		if(username.equals(usernameAndPassword.get(0)) && password.equals(usernameAndPassword.get(1))) {
+	    			try {
+	    				System.out.println("Usuário encontrado... autenticação concluida.");
+		                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
+		                Parent root = loader.load();
+		                TelaAppController TelaAppController = loader.getController();
 
-               Stage stage = new Stage();
-               stage.setScene(new Scene(root));
-               stage.show();
+		                Stage stage = new Stage();
+		                stage.setScene(new Scene(root));
+		                stage.show();
 
-               // Fechar a janela de login, se necessário
-               Stage stage2 = (Stage) loginButton.getScene().getWindow();
-            // Fechar a janela
-            stage2.close();
-           } catch (IOException e) {
-               e.printStackTrace();
-               // Tratar exceção de carregamento da tela de cadastro
-           }
-       }
-    }
-
-   
+		                // Fechar a janela de login, se necessário
+		                Stage stage2 = (Stage) loginButton.getScene().getWindow();
+		                // Fechar a janela
+		                stage2.close();
+		            }
+	    			catch (IOException e) {
+		                e.printStackTrace();
+		                // Tratar exceção de carregamento da tela de cadastro
+		            }
+	    		break;
+	    			
+	    	}
+	    	// Adiciona próxima linha do arquivo
+	    	loginPasswordLine = br.readLine();
+    	}
+    		
+    	br.close();
+    	
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+    
     
     @FXML
     private void handleSignUpButtonAction(ActionEvent actionevent1) {

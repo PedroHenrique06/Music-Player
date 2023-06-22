@@ -21,7 +21,7 @@ public class Diretorio {
 	}
 	
 	
-	public boolean criarDiretorio() {	
+	public boolean ehValido() {	
 		if(!diretorio.exists()) {
 			if(diretorio.mkdir()) {
 				System.out.println("Diretório criado com sucesso!");
