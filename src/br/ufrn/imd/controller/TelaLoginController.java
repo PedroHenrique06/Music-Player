@@ -38,6 +38,8 @@ public class TelaLoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
+        System.out.println("Printar dentro de função funciona!!!");
+        
        if(username.equals("admin")) {
     	   try {
                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));

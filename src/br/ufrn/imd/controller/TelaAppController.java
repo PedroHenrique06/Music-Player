@@ -63,7 +63,7 @@ public class TelaAppController {
 
     private Musica criarMusica(File arquivo) {
         Musica musica = new Musica();
-        musica.setArquivo(arquivo);
+       // musica.setArquivo(arquivo);
         musica.setTitulo(arquivo.getName());
         musica.setLocal(arquivo.getAbsolutePath());
         // Configurar as propriedades da música com base no arquivo selecionado

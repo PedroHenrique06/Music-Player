@@ -1,34 +1,66 @@
-package br.ufrn.imd.dao;
+package br.ufrn.imd.model;
 
-import java.util.ArrayList;
+public class Musica {
+	private String titulo;
+	private String tamanho;
+	private int tamanhoSegundos;
+	private Boolean tocando;
+	private Boolean selecionado;
+	private String local;
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	
+	public String getTamanho() {
+		return tamanho;
+	}
+	
+	public void setTamanho(String tamanho) {
+		this.tamanho = tamanho;
+	}
+	
+	public int getTamanhoSegundos() {
+		return tamanhoSegundos;
+	}
+	
+	public void setTamanhoSegundos(int tamanhoSegundos) {
+		this.tamanhoSegundos = tamanhoSegundos;
+	}
+	
+	public Boolean getTocando() {
+		return tocando;
+	}
+	
+	public void setTocando(Boolean tocando) {
+		this.tocando = tocando;
+	}
+	
+	public Boolean getSelecionado() {
+		return selecionado;
+	}
+	
+	public void setSelecionado(Boolean selecionado) {
+		this.selecionado = selecionado;
+	}
+	
+	public String getLocal() {
+		return local;
+	}
 
-import br.ufrn.imd.model.Musica;
+	public void setLocal(String local) {
+		this.local = local;
+	}
+	
+	public void pausarMusica() {
+	
+	}
+	
+	public void tocarMusica() {
+	
+	}
 
-public class MusicaDAO {
-    private static MusicaDAO instance;
-    private ArrayList<Musica> listaMusicas;
-
-    private MusicaDAO() {
-        listaMusicas = new ArrayList<>();
-    }
-
-    public static MusicaDAO getInstance() {
-        if (instance == null) {
-            instance = new MusicaDAO();
-        }
-        return instance;
-    }
-
-    public void addMusica(Musica musica) {
-        listaMusicas.add(musica);
-    }
-
-    public void removeMusica(Musica musica) {
-        listaMusicas.remove(musica);
-    }
-
-    public ArrayList<Musica> getListaMusicas() {
-        return listaMusicas;
-    }
 }
-

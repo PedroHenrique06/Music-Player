@@ -30,10 +30,10 @@
                     <Font size="24.0" />
                 </font>
             </Text>
-            <TextField promptText="Nome" />
-            <TextField promptText="Senha" />
+            <TextField fx:id="usernameField" layoutX="99.0" layoutY="205.0" promptText="Nome" />
+            <TextField fx:id="passwordField" layoutX="101.0" layoutY="263.0" promptText="Senha" />
             <RadioButton text="VIP" />
-            <Button style="-fx-background-color: #0598ff;" text="Cadastrar" textFill="WHITE" />
+            <Button fx:id="registerButton" layoutX="125.0" layoutY="369.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" style="-fx-background-color: #0598ff;" text="Cadastrar" textFill="WHITE" />
         </VBox>
     </center>
 </BorderPane>
