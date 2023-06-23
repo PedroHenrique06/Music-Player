@@ -4,34 +4,75 @@ import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Optional;
+
+import javafx.scene.control.TextInputDialog;
+
 
 import br.ufrn.imd.model.Musica;
+import br.ufrn.imd.model.Playlist;
+import javafx.scene.media.Media;
+
+import javafx.scene.media.MediaPlayer;
+
 
 public class TelaAppController {
 
     @FXML
     private Button chooseButton;
-
+    
+    @FXML
+    private Button createPlaylistButton;
+    
     @FXML
     private File selectedSong;
 
     @FXML
+    private Button playButton;
+    
+    @FXML
+    private Button pauseButton;
+    
+    @FXML
     private ListView<Musica> musicListView;
-    private ObservableList<Musica> observableList;
+    
 
+    private MediaPlayer mediaPlayer; 
+    
+    @FXML
+    private ListView<Playlist> playlistListView;
+    
+    private ObservableList<Playlist> observablelistaPlaylists;
+    private Playlist playlistSelecionada;
+    
+    private Playlist TodasAsMusicas = new Playlist("Todas as músicas");
+    
     @FXML
     public void initialize() {
-        observableList = FXCollections.observableArrayList();
-        musicListView.setItems(observableList);
+  
+    	observablelistaPlaylists = FXCollections.observableArrayList();
+    	observablelistaPlaylists.add(TodasAsMusicas);
+        playlistListView.setItems(observablelistaPlaylists);
+        
+        playlistListView.setCellFactory(param -> new ListCell<Playlist>() {
+            @Override
+            protected void updateItem(Playlist item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTitulo());
+                }
+            }
+        });
         
         musicListView.setCellFactory(param -> new ListCell<Musica>() {
             @Override
@@ -45,10 +86,37 @@ public class TelaAppController {
             }
         });
     }
+    
+    @FXML
+    private void handlePlaylistSelection(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
+            if (playlistSelecionada != null) {
+                // Atualize a lista de músicas exibida na outra ListView com as músicas da playlist selecionada
+            	musicListView.setItems(playlistSelecionada.getObservableListaMusicas());
+
+            }
+        }
+    }
+
+    @FXML
+    private void criarPlaylist(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Criar Playlist");
+        dialog.setHeaderText("Digite o nome da nova playlist:");
+        dialog.setContentText("Nome:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(nomePlaylist -> {
+            Playlist novaPlaylist = new Playlist(nomePlaylist);
+            observablelistaPlaylists.add(novaPlaylist);
+        });
+    }
+
 
     @FXML
     private void handleChooseButtonAction(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
+    	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Música");
         fileChooser.getExtensionFilters().addAll(
                 new ExtensionFilter("Arquivos de Áudio", "*.mp3", "*.wav", "*.ogg"),
@@ -57,7 +125,13 @@ public class TelaAppController {
         File selectedFile = fileChooser.showOpenDialog(((Button) event.getSource()).getScene().getWindow());
         if (selectedFile != null) {
             Musica musica = criarMusica(selectedFile);
-            observableList.add(musica);
+            playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
+            playlistSelecionada.addMusica(musica);
+            if(playlistSelecionada.getTitulo() != "Todas as músicas") {
+            	TodasAsMusicas.addMusica(musica);
+            }
+           // observableList.add(musica);
+            
         }
     }
 
@@ -73,9 +147,25 @@ public class TelaAppController {
 
     @FXML
     private void handlePlayButtonAction(ActionEvent event) {
-        if (selectedSong != null) {
-            // Adicionar lógica para reproduzir a música
-            System.out.println("Reproduzindo música: " + selectedSong.getAbsolutePath());
+        Musica selectedMusica = musicListView.getSelectionModel().getSelectedItem();
+        if (selectedMusica != null) {
+            File arquivoMusica = selectedMusica.getArquivo();
+            Media media = new Media(arquivoMusica.toURI().toString());
+            if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                mediaPlayer.stop(); // Pausar a reprodução da música atual
+            }
+            
+            mediaPlayer = new MediaPlayer(media);
+
+            mediaPlayer.setOnReady(() -> {
+                mediaPlayer.play();
+                System.out.println("Reproduzindo música: " + arquivoMusica.getAbsolutePath());
+            });
+
+            mediaPlayer.setOnEndOfMedia(() -> {
+                mediaPlayer.stop();
+                System.out.println("Fim da reprodução da música: " + arquivoMusica.getAbsolutePath());
+            });
         }
     }
 

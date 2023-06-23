@@ -1,29 +1,33 @@
 package br.ufrn.imd.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Playlist {
-	private ArrayList<Musica> listaMusicas = new ArrayList<>();
-	private String titulo;
-	
-	public ArrayList<Musica> getListaMusicas() {
-		return listaMusicas;
-	}
-	public void setListaMusicas(ArrayList<Musica> listaMusicas) {
-		this.listaMusicas = listaMusicas;
-	}
-	public String getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-	
-	public void addMusica(Musica musica) {
-		
-	}
-	
-	public void removeMusica() {
-		
-	}
+    private String titulo;
+    private List<Musica> listaMusicas;
+
+    public Playlist(String titulo) {
+        this.titulo = titulo;
+        this.listaMusicas = new ArrayList<>();
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public List<Musica> getListaMusicas() {
+        return listaMusicas;
+    }
+
+    public ObservableList<Musica> getObservableListaMusicas() {
+        return FXCollections.observableList(listaMusicas);
+    }
+
+    public void addMusica(Musica musica) {
+        listaMusicas.add(musica);
+    }
 }
