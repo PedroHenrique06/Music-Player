@@ -2,3 +2,7 @@
 Pedro Henrique : 1234
 Guilherme Hermes : 5432
 Carlos Eduardo : 6262
+Thiago Wesley : 1010
+Vinicius Junior : 2007
+Marcelo Otavio : 2005
+Cristiano Ronaldo : 2009

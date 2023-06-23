@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import br.ufrn.imd.model.Diretorio;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -40,7 +43,17 @@ public class TelaCadastroController {
 		
 		if(diretorio.ehValido()) {
 			
+			
+			
 			String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
+			
+			// Mensagem informando o resultado da operação (sucesso ou fracasso)
+			Alert alert = new Alert(AlertType.INFORMATION);
+	        
+	        // Defina o título e a mensagem da caixa de diálogo
+	        alert.setTitle("Resultado da operação");
+	        alert.setHeaderText(null);
+	        
 			try {
 				FileWriter file = new FileWriter(path, true);
 				
@@ -48,12 +61,30 @@ public class TelaCadastroController {
 				writer.printf(line + "\n");
 				writer.close();
 				
+		        alert.setContentText("O usuário foi cadastrado com sucesso");
+		        
+		        // Exiba a caixa de diálogo e aguarde até que o usuário a feche
+		        alert.showAndWait();
+		        
+		     // Fechar a janela de cadsastro, se necessário
+                Stage stage = (Stage) registerButton.getScene().getWindow();
+                // Fechar a janela
+                stage.close();
+				
+				
 			} catch (IOException e) {
+				alert.setContentText("Falha na operação, não foi possível cadastrar o usuário");
+				// Exiba a caixa de diálogo e aguarde até que o usuário a feche
+		        alert.showAndWait();
 				System.out.println("Deu ruim no arquivo");
 				e.printStackTrace();
 			}
 			
-			// Voltar a tela de login
+			
+			
+			
+			
+			// Limpar a tela de cadastro após realizar a operação (talvez já voltar ao login)
 			
 			
 		}

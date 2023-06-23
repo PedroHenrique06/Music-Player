@@ -24,16 +24,16 @@ public class Diretorio {
 	public boolean ehValido() {	
 		if(!diretorio.exists()) {
 			if(diretorio.mkdir()) {
-				System.out.println("Diretório criado com sucesso!");
+				// Cria o diretório 
 				return true;
 			}
 			else {
-				System.out.println("Falha ao criar diretóri!o");
+				// Falha ao criar o diretório 
 				return false;
 			}
 		}
 		else {
-			System.out.println("Diretório já existe!!!");
+			// O diretório já existe
 			return true;
 		}
 		
