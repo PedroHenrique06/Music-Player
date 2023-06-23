@@ -1,26 +1,21 @@
 package br.ufrn.imd.model;
 
+import java.io.File;
+
 public class Musica {
 	private String titulo;
-	private String tamanho;
 	private int tamanhoSegundos;
 	private Boolean tocando;
 	private Boolean selecionado;
 	private String local;
+	private File arquivo;
 	
 	public String getTitulo() {
 		return titulo;
 	}
+	
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-	
-	public String getTamanho() {
-		return tamanho;
-	}
-	
-	public void setTamanho(String tamanho) {
-		this.tamanho = tamanho;
 	}
 	
 	public int getTamanhoSegundos() {
@@ -56,11 +51,17 @@ public class Musica {
 	}
 	
 	public void pausarMusica() {
-	
+		
 	}
 	
 	public void tocarMusica() {
-	
+		
+	}
+	public File getArquivo() {
+		return arquivo;
+	}
+	public void setArquivo(File arquivo) {
+		this.arquivo = arquivo;
 	}
 
 }
