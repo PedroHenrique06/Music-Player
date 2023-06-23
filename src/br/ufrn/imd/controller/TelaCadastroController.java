@@ -54,9 +54,8 @@ public class TelaCadastroController {
 	        alert.setTitle("Resultado da operação");
 	        alert.setHeaderText(null);
 	        
-	        File path = new File("./usuarios/logins.txt");
 			try {
-				FileWriter fileWriter = new FileWriter(path, true);				
+				FileWriter fileWriter = new FileWriter("./usuarios/logins.txt", true);				
 				PrintWriter printWriter = new PrintWriter(fileWriter);
 				printWriter.printf(line + "\n");
 				printWriter.close();
