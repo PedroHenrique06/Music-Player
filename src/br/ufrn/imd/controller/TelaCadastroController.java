@@ -43,8 +43,6 @@ public class TelaCadastroController {
 		
 		if(diretorio.ehValido()) {
 			
-			
-			
 			String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
 			
 			// Mensagem informando o resultado da operação (sucesso ou fracasso)
@@ -76,7 +74,6 @@ public class TelaCadastroController {
 				alert.setContentText("Falha na operação, não foi possível cadastrar o usuário");
 				// Exiba a caixa de diálogo e aguarde até que o usuário a feche
 		        alert.showAndWait();
-				System.out.println("Deu ruim no arquivo");
 				e.printStackTrace();
 			}
 			

@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -91,6 +93,19 @@ public class TelaLoginController {
 	    	}
 	    	// Adiciona próxima linha do arquivo
 	    	loginPasswordLine = br.readLine();
+    	}
+    		
+    	// Caso o usuário não exista no arquivo de logins
+    	if(loginPasswordLine == null) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            
+            // Defina o título e a mensagem da caixa de diálogo
+            alert.setTitle("Resultado da operação");
+            alert.setHeaderText(null);
+            alert.setContentText("Não há usuário com essas credenciais no sistema, favor realizar o cadastro");
+            
+            // Exiba a caixa de diálogo e aguarde até que o usuário a feche
+            alert.showAndWait();
     	}
     		
     	br.close();
