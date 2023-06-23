@@ -10,7 +10,7 @@
    <bottom>
       <AnchorPane prefHeight="89.0" prefWidth="600.0" style="-fx-background-color: #0598FF;" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="264.0" layoutY="38.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
+            <Button fx:id="playButton" layoutX="264.0" layoutY="38.0" mnemonicParsing="false" onAction="#handlePlayButtonAction" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
             <FontAwesomeIcon glyphName="PLAY" layoutX="271.0" layoutY="56.0" text="" />
             <Button layoutX="288.0" layoutY="38.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
             <FontAwesomeIcon glyphName="PAUSE" layoutX="294.0" layoutY="55.0" />
@@ -21,14 +21,15 @@
    <left>
       <AnchorPane prefHeight="311.0" prefWidth="206.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="musicListView" layoutX="3.0" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="playlistListView" layoutX="3.0" layoutY="56.0" onMouseClicked="#handlePlaylistSelection" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="createPlaylistButton" layoutX="48.0" layoutY="256.0" mnemonicParsing="false" onAction="#criarPlaylist" text="Criar nova playlist" />
          </children>
       </AnchorPane>
    </left>
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="PlaylistList" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="musicListView" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </right>
