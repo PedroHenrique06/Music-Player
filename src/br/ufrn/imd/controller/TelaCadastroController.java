@@ -12,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
 public class TelaCadastroController {
@@ -23,6 +24,9 @@ public class TelaCadastroController {
 
     @FXML
     private Button registerButton;
+    
+    @FXML
+    private RadioButton vipButton;
     
     private void initialize() {
         registerButton.setOnAction(this::handleRegisterButtonAction);
@@ -76,13 +80,6 @@ public class TelaCadastroController {
 		        alert.showAndWait();
 				e.printStackTrace();
 			}
-			
-			
-			
-			
-			
-			// Limpar a tela de cadastro após realizar a operação (talvez já voltar ao login)
-			
 			
 		}
 		
