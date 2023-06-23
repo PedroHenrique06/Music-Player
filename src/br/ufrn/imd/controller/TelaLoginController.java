@@ -53,14 +53,16 @@ public class TelaLoginController {
     		
     		while(loginPasswordLine != null){
     			// Crie um objeto StringTokenizer para tokenizar a String
-                StringTokenizer tokenizer = new StringTokenizer(loginPasswordLine);
+    			String[] tokens = loginPasswordLine.split(" : ");
+                
+    			// String tokenizer = new StringTokenizer(loginPasswordLine);
                 
                 // Lista que guardará o usuário e a senha atuais
                 ArrayList<String> usernameAndPassword = new ArrayList<>();
                 
                 // Adiociona usuário e senha ao array
-                while (tokenizer.hasMoreTokens()) {
-                    usernameAndPassword.add(tokenizer.nextToken());
+                for (String token : tokens) {
+                    usernameAndPassword.add(token);
                 }
                 
                 // Compara com o que o usuario que está tentando fazer login	

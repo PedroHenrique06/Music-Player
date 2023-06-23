@@ -34,7 +34,7 @@ public class TelaCadastroController {
         String password = passwordField.getText();
        	
         // Colocar o nome e a senha em um arquivo
-		String line = username + " " + password; 
+		String line = username + " : " + password; 
 		
 		Diretorio diretorio = new Diretorio("usuarios");
 		
