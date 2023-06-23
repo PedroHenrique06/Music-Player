@@ -1,5 +1,6 @@
 package br.ufrn.imd.controller;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,9 +46,7 @@ public class TelaCadastroController {
 		Diretorio diretorio = new Diretorio("usuarios");
 		
 		if(diretorio.ehValido()) {
-			
-			String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
-			
+
 			// Mensagem informando o resultado da operação (sucesso ou fracasso)
 			Alert alert = new Alert(AlertType.INFORMATION);
 	        
@@ -55,12 +54,12 @@ public class TelaCadastroController {
 	        alert.setTitle("Resultado da operação");
 	        alert.setHeaderText(null);
 	        
+	        File path = new File("./usuarios/logins.txt");
 			try {
-				FileWriter file = new FileWriter(path, true);
-				
-				PrintWriter writer = new PrintWriter(file);
-				writer.printf(line + "\n");
-				writer.close();
+				FileWriter fileWriter = new FileWriter(path, true);				
+				PrintWriter printWriter = new PrintWriter(fileWriter);
+				printWriter.printf(line + "\n");
+				printWriter.close();
 				
 		        alert.setContentText("O usuário foi cadastrado com sucesso");
 		        
