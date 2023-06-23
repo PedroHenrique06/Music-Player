@@ -1,5 +1,6 @@
 package br.ufrn.imd.controller;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,8 +48,7 @@ public class TelaLoginController {
         
         // Pegar os usuarios existentes na base de dados
         try {
-        	String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
-        	InputStream is = new FileInputStream(path); // bytes
+        	InputStream is = new FileInputStream("./usuarios/logins.txt"); // bytes
 			InputStreamReader isr = new InputStreamReader(is); // char
     		BufferedReader br = new BufferedReader(isr); // string
     		String loginPasswordLine = br.readLine();

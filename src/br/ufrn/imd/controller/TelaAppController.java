@@ -1,7 +1,19 @@
 package br.ufrn.imd.controller;
 
-import javafx.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
+import br.ufrn.imd.model.Diretorio;
+import br.ufrn.imd.model.Musica;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
@@ -34,7 +46,6 @@ public class TelaAppController {
     
     @FXML
     private File selectedSong;
-
     @FXML
     private Button playButton;
     
@@ -85,6 +96,8 @@ public class TelaAppController {
                 }
             }
         });
+        
+        loadSongList();
     }
     
     @FXML
@@ -125,6 +138,7 @@ public class TelaAppController {
         File selectedFile = fileChooser.showOpenDialog(((Button) event.getSource()).getScene().getWindow());
         if (selectedFile != null) {
             Musica musica = criarMusica(selectedFile);
+            savePath(musica.getLocal());
             playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
             playlistSelecionada.addMusica(musica);
             if(playlistSelecionada.getTitulo() != "Todas as músicas") {
@@ -134,7 +148,29 @@ public class TelaAppController {
             
         }
     }
-
+    
+    private void loadSongList() {
+	    	try {
+		    	InputStream is = new FileInputStream("./musicas/musicas.txt"); // bytes
+				InputStreamReader isr = new InputStreamReader(is); // char
+				BufferedReader br = new BufferedReader(isr); // string
+				
+				String line = br.readLine();
+				
+				while(line != null){
+					File fileSong = new File(line);
+					Musica song = criarMusica(fileSong);
+		            observableList.add(song);
+					line = br.readLine();
+				}
+				
+				br.close();
+	    	} 
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+  }
+    
     private Musica criarMusica(File arquivo) {
         Musica musica = new Musica();
         musica.setArquivo(arquivo);
@@ -143,6 +179,21 @@ public class TelaAppController {
         // Configurar as propriedades da música com base no arquivo selecionado
         return musica;
     }
+    
+    private void savePath(String path) {
+    	Diretorio diretorio = new Diretorio("musicas");
+    	if(diretorio.ehValido()) {
+				try {
+					FileWriter fileWriter = new FileWriter("./musicas/musicas.txt", true);
+					PrintWriter writter = new PrintWriter(fileWriter);
+					writter.printf(path + "\n");
+					writter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    	}    		
+    		
+	}
 
 
     @FXML

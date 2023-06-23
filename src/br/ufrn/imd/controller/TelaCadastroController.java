@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
@@ -46,9 +45,7 @@ public class TelaCadastroController {
 		Diretorio diretorio = new Diretorio("usuarios");
 		
 		if(diretorio.ehValido()) {
-			
-			String path = "C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/usuarios/logins.txt";
-			
+
 			// Mensagem informando o resultado da operação (sucesso ou fracasso)
 			Alert alert = new Alert(AlertType.INFORMATION);
 	        
@@ -57,11 +54,10 @@ public class TelaCadastroController {
 	        alert.setHeaderText(null);
 	        
 			try {
-				FileWriter file = new FileWriter(path, true);
-				
-				PrintWriter writer = new PrintWriter(file);
-				writer.printf(line + "\n");
-				writer.close();
+				FileWriter fileWriter = new FileWriter("./usuarios/logins.txt", true);				
+				PrintWriter printWriter = new PrintWriter(fileWriter);
+				printWriter.printf(line + "\n");
+				printWriter.close();
 				
 		        alert.setContentText("O usuário foi cadastrado com sucesso");
 		        
