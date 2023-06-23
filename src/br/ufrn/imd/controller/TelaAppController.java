@@ -64,34 +64,32 @@ public class TelaAppController {
         File selectedFile = fileChooser.showOpenDialog(((Button) event.getSource()).getScene().getWindow());
         if (selectedFile != null) {
             Musica musica = criarMusica(selectedFile);
-            salvarCaminho(musica.getLocal());
+            savePath(musica.getLocal());
             observableList.add(musica);
         }
     }
     
     private void loadSongList() {
-    	File file = new File("C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/musicas/musicas.txt");
-    	
-    	try {
-	    	InputStream is = new FileInputStream(file); // bytes
-			InputStreamReader isr = new InputStreamReader(is); // char
-			BufferedReader br = new BufferedReader(isr); // string
-			
-			String line = br.readLine();
-			
-			while(line != null){
-				File fileSong = new File(line);
-				Musica song = criarMusica(fileSong);
-	            observableList.add(song);
-				line = br.readLine();
-			}
-			
-			br.close();
-    	} 
-    	catch(Exception e){
-    		e.printStackTrace();
-    	}
-        }
+	    	try {
+		    	InputStream is = new FileInputStream("./musicas/musicas.txt"); // bytes
+				InputStreamReader isr = new InputStreamReader(is); // char
+				BufferedReader br = new BufferedReader(isr); // string
+				
+				String line = br.readLine();
+				
+				while(line != null){
+					File fileSong = new File(line);
+					Musica song = criarMusica(fileSong);
+		            observableList.add(song);
+					line = br.readLine();
+				}
+				
+				br.close();
+	    	} 
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+  }
     
     private Musica criarMusica(File arquivo) {
         Musica musica = new Musica();
@@ -102,13 +100,13 @@ public class TelaAppController {
         return musica;
     }
     
-    private void salvarCaminho(String caminho) {
+    private void savePath(String path) {
     	Diretorio diretorio = new Diretorio("musicas");
     	if(diretorio.ehValido()) {
 				try {
-					FileWriter file = new FileWriter("C:/Users/PEDRO HENRIQUE/OneDrive/Área de Trabalho/Github/MusicApp/musicas/musicas.txt", true);
-					PrintWriter writter = new PrintWriter(file);
-					writter.printf(caminho + "\n");
+					FileWriter fileWriter = new FileWriter("./musicas/musicas.txt", true);
+					PrintWriter writter = new PrintWriter(fileWriter);
+					writter.printf(path + "\n");
 					writter.close();
 				} catch (IOException e) {
 					e.printStackTrace();
