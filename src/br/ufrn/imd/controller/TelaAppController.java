@@ -21,15 +21,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
-import java.io.File;
 import java.util.Optional;
 
 import javafx.scene.control.TextInputDialog;
 
 
-import br.ufrn.imd.model.Musica;
 import br.ufrn.imd.model.Playlist;
 import javafx.scene.media.Media;
 
@@ -160,7 +156,7 @@ public class TelaAppController {
 				while(line != null){
 					File fileSong = new File(line);
 					Musica song = criarMusica(fileSong);
-		            observableList.add(song);
+		            TodasAsMusicas.addMusica(song);
 					line = br.readLine();
 				}
 				

@@ -1,6 +1,7 @@
 module MusicAppLpII {
 	requires javafx.controls;
 	requires javafx.fxml;
+	requires javafx.media;
 		
 
 	exports br.ufrn.imd.controller to javafx.fxml;
