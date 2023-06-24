@@ -38,9 +38,15 @@ public class TelaCadastroController {
           
         String username = usernameField.getText();
         String password = passwordField.getText();
+        String vip 		= "false";
+        
+        if(vipButton.isSelected()) {
+        	vip = "true";
+        }
+        
        	
-        // Colocar o nome e a senha em um arquivo
-		String line = username + " : " + password; 
+        // Colocar o nome, senha e se é vip em um arquivo
+		String userData = username + " : " + password + " : " + vip; 
 		
 		Diretorio diretorio = new Diretorio("usuarios");
 		
@@ -56,7 +62,7 @@ public class TelaCadastroController {
 			try {
 				FileWriter fileWriter = new FileWriter("./usuarios/logins.txt", true);				
 				PrintWriter printWriter = new PrintWriter(fileWriter);
-				printWriter.printf(line + "\n");
+				printWriter.printf(userData + "\n");
 				printWriter.close();
 				
 		        alert.setContentText("O usuário foi cadastrado com sucesso");
