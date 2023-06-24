@@ -1,0 +1,14 @@
+
+Pedro Henrique : 1234
+Guilherme Hermes : 5432
+Carlos Eduardo : 6262
+Thiago Wesley : 1010
+Vinicius Junior : 2007
+Marcelo Otavio : 2005
+Cristiano Ronaldo : 2009
+Pamella Borges : 2005
+Admin : 0
+Melyssa Borges : 2005
+gui : 123
+aaaaaaaaa : 123123
+123asdad : 12314
