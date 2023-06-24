@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrn.imd.controller.TelaCadastroController">
+    <left>
+        <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #0598ff;">
+            <children>
+                <FontAwesomeIcon glyphName="MUSIC" layoutX="50.0" layoutY="150.0" size="100" />
+                <Text fill="WHITE" layoutX="50.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MusicApp">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+            <Text fill="#0598ff" strokeType="OUTSIDE" strokeWidth="0.0" text="Cadastro" textAlignment="CENTER">
+                <font>
+                    <Font size="24.0" />
+                </font>
+            </Text>
+            <TextField fx:id="usernameField" layoutX="99.0" layoutY="205.0" promptText="Nome" />
+            <TextField fx:id="passwordField" layoutX="101.0" layoutY="263.0" promptText="Senha" />
+            <RadioButton fx:id="vipButton" text="VIP" />
+            <Button fx:id="registerButton" layoutX="125.0" layoutY="369.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" style="-fx-background-color: #0598ff;" text="Cadastrar" textFill="WHITE" />
+        </VBox>
+    </center>
+</BorderPane>
