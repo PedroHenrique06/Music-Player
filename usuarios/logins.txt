@@ -1,10 +1,10 @@
-Pedro Henrique : 1234
-Guilherme Hermes : 5432
-Carlos Eduardo : 6262
-Thiago Wesley : 1010
-Vinicius Junior : 2007
-Marcelo Otavio : 2005
-Cristiano Ronaldo : 2009
-Pamella Borges : 2005
-Admin : 0
-Melyssa Borges : 2005
+
+Pedro Henrique : 1234 : false
+Guilherme Hermes : 5432 : false
+Marcelo Otavio : 2005 : false
+Cristiano Ronaldo : 2009 : false
+Pamella Borges : 2005 : false
+Admin : 0 : false
+Melyssa Borges : 2005 : false
+Gabriel Barbosa : 2019 : true
+João Antônio : 2006 : false
