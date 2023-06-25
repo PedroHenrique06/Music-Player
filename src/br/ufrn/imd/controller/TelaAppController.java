@@ -124,6 +124,7 @@ public class TelaAppController {
         result.ifPresent(nomePlaylist -> {
             Playlist novaPlaylist = new Playlist(nomePlaylist);
             observablelistaPlaylists.add(novaPlaylist);
+            // File file = new File("./playlist/" + nomePlaylist);
         });
     }
 

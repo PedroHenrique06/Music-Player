@@ -8,3 +8,4 @@ Admin : 0 : false
 Melyssa Borges : 2005 : false
 Gabriel Barbosa : 2019 : true
 João Antônio : 2006 : false
+Aline : 1 : true
