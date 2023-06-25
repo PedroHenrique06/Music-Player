@@ -1,12 +1,13 @@
 # Arquivos compilados
 
+.classpath
+.project
+.settings/
+
+
 *.class
 *.prefs
 *.xml
-*.classpath
-*.project
-.settings/
-
 
 # Diretório de saída
 /bin/
