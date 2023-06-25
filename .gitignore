@@ -1,6 +1,7 @@
 # Arquivos compilados
 
 *.class
+*.prefs
 
 # Diretório de saída
 /bin/
