@@ -1,0 +1,7 @@
+# Arquivos compilados
+
+*.class
+
+# Diretório de saída
+/bin/
+
