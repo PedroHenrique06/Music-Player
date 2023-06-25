@@ -45,7 +45,6 @@ public class UsuarioDAO {
                     }
                 }
             }
-            System.out.println("eaeeee");
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();

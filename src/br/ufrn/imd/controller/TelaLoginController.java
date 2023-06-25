@@ -1,13 +1,7 @@
 package br.ufrn.imd.controller;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +14,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import br.ufrn.imd.dao.UsuarioDAO;
+import br.ufrn.imd.model.Usuario;
 
 public class TelaLoginController {
 
@@ -45,58 +41,35 @@ public class TelaLoginController {
         // Lidar com o evento de clique do botão de login
         String username = usernameField.getText();
         String password = passwordField.getText();
+        UsuarioDAO usuariodao = UsuarioDAO.getInstance();
+        usuariodao.carregaUsuarios();
+        ArrayList<Usuario> listaUsuarios = usuariodao.getListaUsuarios();
         
-        // Pegar os usuarios existentes na base de dados
-        try {
-        	InputStream is = new FileInputStream("./usuarios/logins.txt"); // bytes
-			InputStreamReader isr = new InputStreamReader(is); // char
-    		BufferedReader br = new BufferedReader(isr); // string
-    		String loginPasswordLine = br.readLine();
-    		
-    		while(loginPasswordLine != null){
-    			// Crie um objeto StringTokenizer para tokenizar a String
-    			String[] tokens = loginPasswordLine.split(" : ");
-                
-    			// String tokenizer = new StringTokenizer(loginPasswordLine);
-                
-                // Lista que guardará o usuário e a senha atuais
-                ArrayList<String> usernameAndPassword = new ArrayList<>();
-                
-                // Adiociona usuário e senha ao array
-                for (String token : tokens) {
-                    usernameAndPassword.add(token);
-                }
-                
-                // Compara com o que o usuario que está tentando fazer login	
-	    		if(username.equals(usernameAndPassword.get(0)) && password.equals(usernameAndPassword.get(1))) {
-	    			try {
-	    				System.out.println("Usuário encontrado... autenticação concluida.");
-		                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
-		                Parent root = loader.load();
-		                TelaAppController TelaAppController = loader.getController();
+         
+        for (Usuario usuario : listaUsuarios) {
+            if (username.equals(usuario.getUsername()) && password.equals(usuario.getSenha())) {
+                try {
+                    System.out.println("Usuário encontrado... autenticação concluída.");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
+                    Parent root = loader.load();
+                   
 
-		                Stage stage = new Stage();
-		                stage.setScene(new Scene(root));
-		                stage.show();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
 
-		                // Fechar a janela de login, se necessário
-		                Stage stage2 = (Stage) loginButton.getScene().getWindow();
-		                // Fechar a janela
-		                stage2.close();
-		            }
-	    			catch (IOException e) {
-		                e.printStackTrace();
-		                // Tratar exceção de carregamento da tela de cadastro
-		            }
-	    		break;
-	    			
-	    	}
-	    	// Adiciona próxima linha do arquivo
-	    	loginPasswordLine = br.readLine();
-    	}
-    		
-    	// Caso o usuário não exista no arquivo de logins
-    	if(loginPasswordLine == null) {
+                    // Fechar a janela de login, se necessário
+                    Stage stage2 = (Stage) loginButton.getScene().getWindow();
+                    // Fechar a janela
+                    stage2.close();
+                  return;
+                    
+                } catch (IOException err) {
+                    err.printStackTrace();
+                    // Tratar exceção de carregamento da tela de login
+                }         
+            }
+        }
             Alert alert = new Alert(AlertType.INFORMATION);
             
             // Defina o título e a mensagem da caixa de diálogo
@@ -106,14 +79,8 @@ public class TelaLoginController {
             
             // Exiba a caixa de diálogo e aguarde até que o usuário a feche
             alert.showAndWait();
-    	}
-    		
-    	br.close();
     	
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        
 	}
     
     
@@ -124,7 +91,7 @@ public class TelaLoginController {
     	 try {
              FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaCadastro.fxml"));
              Parent root = loader.load();
-             TelaCadastroController telaCadastroController = loader.getController();
+        
 
              Stage stage = new Stage();
              stage.setScene(new Scene(root));
