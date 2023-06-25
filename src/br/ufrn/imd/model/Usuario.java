@@ -5,10 +5,12 @@ public class Usuario {
 	private String id;
 	private String username;
 	private String senha;
+	private Boolean logado;
 	
 	public Usuario(String username, String senha) {
 		this.username = username;
 		this.senha = senha;
+		logado = false;
 	}
 	
 	public String getNome() {
@@ -34,6 +36,14 @@ public class Usuario {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Boolean getLogado() {
+		return logado;
+	}
+
+	public void setLogado(Boolean logado) {
+		this.logado = logado;
 	}
 	
 }

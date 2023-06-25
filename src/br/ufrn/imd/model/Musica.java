@@ -39,16 +39,6 @@ public String getLocal() {
 public void setLocal(String local) {
 	this.local = local;
 }
-
-
-
-public void pausarMusica() {
-	
-}
-
-public void tocarMusica() {
-	
-}
 public File getArquivo() {
 	return arquivo;
 }
