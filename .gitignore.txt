@@ -1,5 +1,0 @@
-bin/
-.xml
-.classpath
-.project
-.settings/
