@@ -29,6 +29,7 @@ import javafx.scene.control.TextInputDialog;
 
 
 import br.ufrn.imd.model.Playlist;
+import br.ufrn.imd.model.Usuario;
 import javafx.scene.media.Media;
 
 import javafx.scene.media.MediaPlayer;
@@ -66,7 +67,7 @@ public class TelaAppController {
     private Playlist playlistSelecionada;
     
     private Playlist TodasAsMusicas = new Playlist("Todas as músicas");
-    
+    private Musica ultimaMusicaTocada = new Musica();
     @FXML
     public void initialize() {
   
@@ -226,17 +227,22 @@ public class TelaAppController {
 	}
 
 
-    
-    
     @FXML
     private void handlePlayButtonAction(ActionEvent event) {
-        Musica selectedMusica = musicListView.getSelectionModel().getSelectedItem();
+    	
+    	
+    	Musica selectedMusica = musicListView.getSelectionModel().getSelectedItem();
+    	if(ultimaMusicaTocada == selectedMusica) {
+    		mediaPlayer.play();
+    	}else {
         if (selectedMusica != null) {
             File arquivoMusica = selectedMusica.getArquivo();
             Media media = new Media(arquivoMusica.toURI().toString());
+           
             if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                mediaPlayer.stop(); // Pausar a reprodução da música atual
+                mediaPlayer.stop(); // 
             }
+            
             
             mediaPlayer = new MediaPlayer(media);
 
@@ -249,14 +255,16 @@ public class TelaAppController {
                 mediaPlayer.stop();
                 System.out.println("Fim da reprodução da música: " + arquivoMusica.getAbsolutePath());
             });            
-        }
+        	}
+        ultimaMusicaTocada = selectedMusica;
     }
+}
 
     @FXML
     private void handlePauseButtonAction(ActionEvent event) {
-        if (selectedSong != null) {
-            // Adicionar lógica para pausar a reprodução da música
-            System.out.println("Pausando música: " + selectedSong.getAbsolutePath());
+        if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause(); // Pausar a reprodução da música
+            System.out.println("Música pausada.");
         }
     }
 
