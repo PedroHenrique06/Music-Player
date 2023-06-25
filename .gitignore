@@ -2,6 +2,11 @@
 
 *.class
 *.prefs
+*.xml
+*.classpath
+*.project
+.settings/
+
 
 # Diretório de saída
 /bin/
