@@ -1,7 +1,7 @@
 package br.ufrn.imd.dao;
 
 import java.util.ArrayList;
-
+import java.util.Optional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import br.ufrn.imd.model.UsuarioVIP;
 public class UsuarioDAO {
     private static UsuarioDAO instance;
     private ArrayList<Usuario> listaUsuarios;
+    private Usuario usuarioAtual;
+    private UsuarioVIP usuarioVIPAtual;
 
     private UsuarioDAO() {
         listaUsuarios = new ArrayList<>();
@@ -21,6 +23,22 @@ public class UsuarioDAO {
             instance = new UsuarioDAO();
         }
         return instance;
+    }
+    
+    public void setUsuarioAtual(Usuario usuarioAtual ) {
+    	this.usuarioAtual = usuarioAtual;
+    }
+    
+    public Usuario getUsuarioAtual() {
+    	return usuarioAtual;
+    }
+    
+    public void setUsuarioAtual(UsuarioVIP usuarioVIPAtual ) {
+    	this.usuarioVIPAtual = usuarioVIPAtual;
+    }
+    
+    public Usuario getUsuarioVIPAtual() {
+    	return usuarioVIPAtual;
     }
 
     public void carregaUsuarios() {
@@ -58,6 +76,7 @@ public class UsuarioDAO {
     public void removerUsuario(Usuario usuario) {
         listaUsuarios.remove(usuario);
     }
+    
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;

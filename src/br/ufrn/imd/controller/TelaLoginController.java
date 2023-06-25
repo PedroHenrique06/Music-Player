@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import br.ufrn.imd.dao.UsuarioDAO;
 import br.ufrn.imd.model.Usuario;
+import br.ufrn.imd.model.UsuarioVIP;
 
 public class TelaLoginController {
 
@@ -49,6 +50,15 @@ public class TelaLoginController {
         for (Usuario usuario : listaUsuarios) {
             if (username.equals(usuario.getUsername()) && password.equals(usuario.getSenha())) {
                 try {
+                	
+                	if(usuario instanceof UsuarioVIP) {
+                		usuariodao.setUsuarioAtual((UsuarioVIP)usuario);
+                	}
+                	else {
+                		usuariodao.setUsuarioAtual(usuario);
+                	}
+                	
+                	
                     System.out.println("Usuário encontrado... autenticação concluída.");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
                     Parent root = loader.load();

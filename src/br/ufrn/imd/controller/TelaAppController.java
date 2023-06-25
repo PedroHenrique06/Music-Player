@@ -70,6 +70,10 @@ public class TelaAppController {
     private Musica ultimaMusicaTocada = new Musica();
     @FXML
     public void initialize() {
+    	
+    	UsuarioDAO usuarioAtual = UsuarioDAO.getInstance();
+    	
+    	System.out.println("Usuario atual: " + usuarioAtual.getUsuarioAtual().getUsername());
   
     	observablelistaPlaylists = FXCollections.observableArrayList();
     	observablelistaPlaylists.add(TodasAsMusicas);
@@ -125,6 +129,8 @@ public class TelaAppController {
         result.ifPresent(nomePlaylist -> {
             Playlist novaPlaylist = new Playlist(nomePlaylist);
             observablelistaPlaylists.add(novaPlaylist);
+            File file = new File("");
+            
         });
     }
 
