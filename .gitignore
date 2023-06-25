@@ -4,8 +4,6 @@
 .project
 
 *.class
-*.prefs
-*.xml
 
 # Diretório de saída
 /bin/
