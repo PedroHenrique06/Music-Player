@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import br.ufrn.imd.dao.UsuarioDAO;
 import br.ufrn.imd.model.Diretorio;
 import br.ufrn.imd.model.Musica;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.util.Optional;
@@ -36,6 +38,9 @@ public class TelaAppController {
 
     @FXML
     private Button chooseButton;
+    
+    @FXML
+    private Button chooseDirectoryButton;
     
     @FXML
     private Button createPlaylistButton;
@@ -145,6 +150,35 @@ public class TelaAppController {
         }
     }
     
+    @FXML
+    private void handleChooseDirectoryButtonAction(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Selecionar Diretório de Músicas");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home"))); // Define o diretório inicial como o diretório do usuário
+
+        File selectedDirectory = directoryChooser.showDialog(((Button) event.getSource()).getScene().getWindow());
+        if (selectedDirectory != null) {
+            // Percorre todos os arquivos de música dentro do diretório selecionado
+            File[] musicFiles = selectedDirectory.listFiles((dir, name) -> name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".ogg"));
+            if (musicFiles != null) {
+                for (File musicFile : musicFiles) {
+                    Musica musica = criarMusica(musicFile);
+                    savePath(musica.getLocal());
+                    playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
+                    if( playlistSelecionada == null) {
+                    	playlistSelecionada = TodasAsMusicas;
+                    }
+                    playlistSelecionada.addMusica(musica);
+                    if(playlistSelecionada.getTitulo() != "Todas as músicas") {
+                    	TodasAsMusicas.addMusica(musica);
+                    	
+                    }
+                }
+            }
+        }
+    }
+    
+    
     private void loadSongList() {
 	    	try {
 		    	InputStream is = new FileInputStream("./musicas/musicas.txt"); // bytes
@@ -192,6 +226,8 @@ public class TelaAppController {
 	}
 
 
+    
+    
     @FXML
     private void handlePlayButtonAction(ActionEvent event) {
         Musica selectedMusica = musicListView.getSelectionModel().getSelectedItem();
@@ -212,7 +248,7 @@ public class TelaAppController {
             mediaPlayer.setOnEndOfMedia(() -> {
                 mediaPlayer.stop();
                 System.out.println("Fim da reprodução da música: " + arquivoMusica.getAbsolutePath());
-            });
+            });            
         }
     }
 

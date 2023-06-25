@@ -10,11 +10,12 @@
    <bottom>
       <AnchorPane prefHeight="89.0" prefWidth="600.0" style="-fx-background-color: #0598FF;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="playButton" layoutX="264.0" layoutY="38.0" mnemonicParsing="false" onAction="#handlePlayButtonAction" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
-            <FontAwesomeIcon glyphName="PLAY" layoutX="271.0" layoutY="56.0" text="" />
-            <Button layoutX="288.0" layoutY="38.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
-            <FontAwesomeIcon glyphName="PAUSE" layoutX="294.0" layoutY="55.0" />
-            <Button fx:id="chooseButton" layoutX="356.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleChooseButtonAction" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF;" text="Escolher música" />
+            <Button fx:id="playButton" layoutX="212.0" layoutY="38.0" mnemonicParsing="false" onAction="#handlePlayButtonAction" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
+            <FontAwesomeIcon disable="true" glyphName="PLAY" layoutX="219.0" layoutY="55.0" text="" />
+            <Button layoutX="249.0" layoutY="38.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" style="-fx-background-color: #0590FF; -fx-text-fill: white;" />
+            <FontAwesomeIcon disable="true" glyphName="PAUSE" layoutX="256.0" layoutY="56.0" text="" />
+            <Button fx:id="chooseButton" layoutX="319.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleChooseButtonAction" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #FFFFFF;" text="Escolher música" />
+            <Button fx:id="chooseDirectoryButton" layoutX="449.0" layoutY="38.0" mnemonicParsing="false" onAction="#handleChooseDirectoryButtonAction" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: #FFFFFF;" text="Escolher pasta" />
          </children>
       </AnchorPane>
    </bottom>
