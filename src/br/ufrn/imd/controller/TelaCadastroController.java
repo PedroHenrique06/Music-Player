@@ -14,8 +14,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
+/**
+ * Classe controladora responsável por gerenciar a lógica da tela de cadastro.
+ */
 public class TelaCadastroController {
-	@FXML
+
+    @FXML
     private TextField usernameField;
 
     @FXML
@@ -23,69 +27,60 @@ public class TelaCadastroController {
 
     @FXML
     private Button registerButton;
-    
+
     @FXML
     private RadioButton vipButton;
-    
+
+    /**
+     * Inicializa o controlador.
+     */
+    @FXML
     private void initialize() {
         registerButton.setOnAction(this::handleRegisterButtonAction);
     }
-    
+
+    /**
+     * Manipula o evento de clique no botão de cadastro.
+     *
+     * @param actionEvent O evento de clique.
+     */
     @FXML
     private void handleRegisterButtonAction(ActionEvent actionEvent) {
-    	
-        // Lidar com o evento de clique do botão de login
-          
+
         String username = usernameField.getText();
         String password = passwordField.getText();
-        String vip 		= "false";
-        
-        if(vipButton.isSelected()) {
-        	vip = "true";
+        String vip = "false";
+
+        if (vipButton.isSelected()) {
+            vip = "true";
         }
-        
-       	
-        // Colocar o nome, senha e se é vip em um arquivo
-		String userData = username + " : " + password + " : " + vip; 
-		
-		Diretorio diretorio = new Diretorio("usuarios");
-		
-		if(diretorio.ehValido()) {
 
-			// Mensagem informando o resultado da operação (sucesso ou fracasso)
-			Alert alert = new Alert(AlertType.INFORMATION);
-	        
-	        // Defina o título e a mensagem da caixa de diálogo
-	        alert.setTitle("Resultado da operação");
-	        alert.setHeaderText(null);
-	        
-			try {
-				FileWriter fileWriter = new FileWriter("./usuarios/logins.txt", true);				
-				PrintWriter printWriter = new PrintWriter(fileWriter);
-				printWriter.printf(userData + "\n");
-				printWriter.close();
-				
-		        alert.setContentText("O usuário foi cadastrado com sucesso");
-		        
-		        // Exiba a caixa de diálogo e aguarde até que o usuário a feche
-		        alert.showAndWait();
-		        
-		     // Fechar a janela de cadsastro, se necessário
+        String userData = username + " : " + password + " : " + vip;
+
+        Diretorio diretorio = new Diretorio("usuarios");
+
+        if (diretorio.ehValido()) {
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Resultado da operação");
+            alert.setHeaderText(null);
+
+            try {
+                FileWriter fileWriter = new FileWriter("./usuarios/logins.txt", true);
+                PrintWriter printWriter = new PrintWriter(fileWriter);
+                printWriter.printf(userData + "\n");
+                printWriter.close();
+
+                alert.setContentText("O usuário foi cadastrado com sucesso");
+                alert.showAndWait();
+
                 Stage stage = (Stage) registerButton.getScene().getWindow();
-                // Fechar a janela
                 stage.close();
-				
-				
-			} catch (IOException e) {
-				alert.setContentText("Falha na operação, não foi possível cadastrar o usuário");
-				// Exiba a caixa de diálogo e aguarde até que o usuário a feche
-		        alert.showAndWait();
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
-                     
+            } catch (IOException e) {
+                alert.setContentText("Falha na operação, não foi possível cadastrar o usuário");
+                alert.showAndWait();
+                e.printStackTrace();
+            }
+        }
+    }
 }
-
