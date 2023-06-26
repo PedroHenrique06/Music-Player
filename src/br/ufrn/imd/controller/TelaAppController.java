@@ -244,6 +244,14 @@ public class TelaAppController {
         }
     }
     
+    
+    /**
+     * Salva o caminho de um arquivo de música em uma playlist que é um arquivo de texto.
+     *
+     * @param path O caminho do arquivo de música a ser salvo.
+     * @param folder A pasta onde o arquivo será salvo.
+     * @param playlistTitle O nome da playlist.
+     */
     private void savePath(String path, String folder, String playlistTitle) {
     	File file = new File("./" + folder + "/playlist_" + playlistTitle + ".txt");
     	try {
@@ -367,6 +375,9 @@ public class TelaAppController {
 	    	}
   }
     
+    /**
+     * Carrega as playlists do usuário atual a partir do diretório dele.
+     */
     private void loadPlaylistList() {
     	    	
         File folder = new File(usuarioAtual.getUsername());
@@ -379,7 +390,6 @@ public class TelaAppController {
 
         if (files != null) {
             for (File file : files) {
-            	
                
             	try {
 			    	InputStream is = new FileInputStream(file); // bytes
@@ -387,8 +397,6 @@ public class TelaAppController {
 					BufferedReader br = new BufferedReader(isr); // string
 					
 					String line = br.readLine();
-					
-					
 					
 					Playlist playlistAtual = new Playlist(extrairNome(file.getName()));
 					while(line != null){
@@ -408,7 +416,9 @@ public class TelaAppController {
         }
     	
 }
-    
+    /**
+     * Retira a extensão do nome do arquivo.
+     */
     private String extrairNome(String nome) {
 
     	// Extrair o nome sem a extensão
@@ -420,6 +430,9 @@ public class TelaAppController {
         return parteDesejada;
     }
 
+    /**
+     * Retira o "playlist_" do nome do arquivo.
+     */
     private String extrairNomeSemExtensao(String nomeArquivo) {
         int indicePonto = nomeArquivo.lastIndexOf(".");
         if (indicePonto != -1) {
