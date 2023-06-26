@@ -12,7 +12,6 @@ public class UsuarioDAO {
     private static UsuarioDAO instance;
     private ArrayList<Usuario> listaUsuarios;
     private Usuario usuarioAtual;
-    private UsuarioVIP usuarioVIPAtual;
 
     private UsuarioDAO() {
         listaUsuarios = new ArrayList<>();
@@ -34,11 +33,7 @@ public class UsuarioDAO {
     }
     
     public void setUsuarioAtual(UsuarioVIP usuarioVIPAtual ) {
-    	this.usuarioVIPAtual = usuarioVIPAtual;
-    }
-    
-    public Usuario getUsuarioVIPAtual() {
-    	return usuarioVIPAtual;
+    	this.usuarioAtual = usuarioVIPAtual;
     }
 
     public void carregaUsuarios() {
