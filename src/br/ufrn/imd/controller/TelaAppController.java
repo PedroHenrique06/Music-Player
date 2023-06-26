@@ -1,6 +1,7 @@
 package br.ufrn.imd.controller;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -9,20 +10,36 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.control.ButtonType;
+import br.ufrn.imd.dao.MusicaDAO;
+import br.ufrn.imd.dao.PlaylistDAO;
 import br.ufrn.imd.dao.UsuarioDAO;
 import br.ufrn.imd.model.Diretorio;
 import br.ufrn.imd.model.Musica;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+
+
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+
 import java.util.Optional;
 
 import javafx.scene.control.TextInputDialog;
@@ -30,13 +47,23 @@ import javafx.scene.control.TextInputDialog;
 
 import br.ufrn.imd.model.Playlist;
 import br.ufrn.imd.model.Usuario;
+import br.ufrn.imd.model.UsuarioVIP;
 import javafx.scene.media.Media;
 
 import javafx.scene.media.MediaPlayer;
 
-
+/**
+ * Classe controladora responsável por gerenciar a lógica da interface gráfica do player de música.
+ */
 public class TelaAppController {
 
+	@FXML
+	private Label nomeUsuarioAtual;
+	
+	@FXML
+	private Label vipOuComum;
+	
+	
     @FXML
     private Button chooseButton;
     
@@ -46,14 +73,17 @@ public class TelaAppController {
     @FXML
     private Button createPlaylistButton;
     
-    @FXML
-    private File selectedSong;
+    @FXML Button logoutButton;
+    
     @FXML
     private Button playButton;
     
     @FXML
     private Button pauseButton;
     
+     @FXML
+    private File selectedSong;
+     
     @FXML
     private ListView<Musica> musicListView;
     
@@ -66,15 +96,28 @@ public class TelaAppController {
     private ObservableList<Playlist> observablelistaPlaylists;
     private Playlist playlistSelecionada;
     
+    
     private Playlist TodasAsMusicas = new Playlist("Todas as músicas");
     private Musica ultimaMusicaTocada = new Musica();
+    
+    private Usuario usuarioAtual;
+    
+    
+    /**
+     * Método inicializado ao carregar a interface gráfica.
+     */
     @FXML
     public void initialize() {
     	
-    	UsuarioDAO usuarioAtual = UsuarioDAO.getInstance();
+    	usuarioAtual = UsuarioDAO.getInstance().getUsuarioAtual();
     	
-    	System.out.println("Usuario atual: " + usuarioAtual.getUsuarioAtual().getUsername());
-  
+    	if(usuarioAtual != null) {
+    	nomeUsuarioAtual.setText(usuarioAtual.getUsername());
+    	vipOuComum.setText( usuarioAtual instanceof UsuarioVIP ? "VIP" : "Conta gratuita!");}
+    	
+    	System.out.println("Usuario atual: " + usuarioAtual.getUsername());
+
+    	
     	observablelistaPlaylists = FXCollections.observableArrayList();
     	observablelistaPlaylists.add(TodasAsMusicas);
         playlistListView.setItems(observablelistaPlaylists);
@@ -106,6 +149,12 @@ public class TelaAppController {
         loadSongList();
     }
     
+    
+    /**
+     * Manipula o evento de seleção de uma playlist.
+     *
+     * @param event O evento de seleção.
+     */
     @FXML
     private void handlePlaylistSelection(MouseEvent event) {
         if (event.getClickCount() == 1) {
@@ -118,9 +167,15 @@ public class TelaAppController {
         }
     }
 
+    /**
+     * Cria uma nova playlist quando o botão é clicado.
+     *
+     * @param event O evento do clique no botão.
+     */
     @FXML
     private void criarPlaylist(ActionEvent event) {
-        TextInputDialog dialog = new TextInputDialog();
+        if(usuarioAtual instanceof UsuarioVIP) {
+    	TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Criar Playlist");
         dialog.setHeaderText("Digite o nome da nova playlist:");
         dialog.setContentText("Nome:");
@@ -129,12 +184,25 @@ public class TelaAppController {
         result.ifPresent(nomePlaylist -> {
             Playlist novaPlaylist = new Playlist(nomePlaylist);
             observablelistaPlaylists.add(novaPlaylist);
-            File file = new File("");
+            
             
         });
+        }else {
+        	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("Aviso");
+        	alert.setHeaderText(null);
+        	alert.setContentText("Essa é uma função para usuários VIPs.");
+
+        	alert.showAndWait();
+        	 alert.close();
+        }
     }
 
-
+    /**
+     * Manipula o evento de escolha de uma música.
+     *
+     * @param event O evento de escolha da música.
+     */
     @FXML
     private void handleChooseButtonAction(ActionEvent event) {
     	FileChooser fileChooser = new FileChooser();
@@ -157,6 +225,54 @@ public class TelaAppController {
         }
     }
     
+    @FXML
+    private void handleLogoutButtonAction(ActionEvent actionEvent) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText(null);
+        alert.setContentText("Tem certeza que deseja fazer logout?");
+
+        ButtonType okButton = new ButtonType("OK");
+        ButtonType cancelButton = new ButtonType("Cancelar");
+
+        alert.getButtonTypes().setAll(okButton, cancelButton);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setAlwaysOnTop(true); // Opcional: para manter o diálogo sempre no topo
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == okButton) {
+                // Realizar o logout
+                UsuarioDAO.getInstance().resetDAO(); // Chamando o método resetDAO para limpar os dados
+                MusicaDAO.getInstance().resetDAO();
+                PlaylistDAO.getInstance().resetDAO();
+                
+                
+                // Fechar a janela atual e voltar para a tela de login
+                Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+                currentStage.close();
+
+                // Abrir a tela de login novamente
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaLogin.fxml"));
+                Parent root = null;
+				try {
+					root = loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                Stage loginStage = new Stage();
+                loginStage.setScene(new Scene(root));
+                loginStage.show();
+            }
+        });
+    }
+    
+    /**
+     * Manipula o evento de clique pra seleção de um novo diretório com músicas.
+     *
+     * @param event O evento de clique.
+     */
     @FXML
     private void handleChooseDirectoryButtonAction(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -186,6 +302,9 @@ public class TelaAppController {
     }
     
     
+    /**
+     * Carrega a lista de músicas salvas a partir de um arquivo de texto.
+     */
     private void loadSongList() {
 	    	try {
 		    	InputStream is = new FileInputStream("./musicas/musicas.txt"); // bytes
@@ -208,6 +327,12 @@ public class TelaAppController {
 	    	}
   }
     
+    /**
+     * Cria um objeto Musica com base em um arquivo selecionado.
+     *
+     * @param arquivo O arquivo de áudio selecionado.
+     * @return O objeto Musica criado.
+     */
     private Musica criarMusica(File arquivo) {
         Musica musica = new Musica();
         musica.setArquivo(arquivo);
@@ -217,6 +342,11 @@ public class TelaAppController {
         return musica;
     }
     
+    /**
+     * Salva o caminho de um arquivo de música em um arquivo de texto.
+     *
+     * @param path O caminho do arquivo de música a ser salvo.
+     */
     private void savePath(String path) {
     	Diretorio diretorio = new Diretorio("musicas");
     	if(diretorio.ehValido()) {
@@ -232,7 +362,11 @@ public class TelaAppController {
     		
 	}
 
-
+    /**
+     * Manipula o evento de clique no botão Play.
+     *
+     * @param event O evento de clique.
+     */
     @FXML
     private void handlePlayButtonAction(ActionEvent event) {
     	
@@ -265,7 +399,11 @@ public class TelaAppController {
         ultimaMusicaTocada = selectedMusica;
     }
 }
-
+    /**
+     * Manipula o evento do botão "Pause".
+     *
+     * @param event O evento do clique no botão "Pause".
+     */
     @FXML
     private void handlePauseButtonAction(ActionEvent event) {
         if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
@@ -274,11 +412,6 @@ public class TelaAppController {
         }
     }
 
-    @FXML
-    private void handleStopButtonAction(ActionEvent event) {
-        if (selectedSong != null) {
-            // Adicionar lógica para parar a reprodução da música
-            System.out.println("Parando música: " + selectedSong.getAbsolutePath());
-        }
-    }
+
+    
 }
