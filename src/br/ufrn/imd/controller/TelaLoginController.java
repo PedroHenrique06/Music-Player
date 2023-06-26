@@ -63,15 +63,15 @@ public class TelaLoginController {
         for (Usuario usuario : listaUsuarios) {
             if (username.equals(usuario.getUsername()) && password.equals(usuario.getSenha())) {
                 try {
-                    System.out.println(usuario.getUsername() + " senha: " + usuario.getSenha());
-
-                    if (usuario instanceof UsuarioVIP) {
-                        usuariodao.setUsuarioAtual(usuario);
-                        System.out.println(usuario.getClass());
-                    } else {
-                        usuariodao.setUsuarioAtual(usuario);
-                    }
-
+                	
+                	if(usuario instanceof UsuarioVIP) {
+                		usuariodao.setUsuarioAtual(usuario);
+                	}
+                	else {
+                		usuariodao.setUsuarioAtual(usuario);
+                	}
+                	
+                	
                     System.out.println("Usuário encontrado... autenticação concluída.");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaApp.fxml"));
                     Parent root = loader.load();
