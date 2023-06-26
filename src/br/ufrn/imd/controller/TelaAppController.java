@@ -48,6 +48,7 @@ import javafx.scene.control.TextInputDialog;
 
 
 import br.ufrn.imd.model.Playlist;
+import br.ufrn.imd.model.Usuario;
 import br.ufrn.imd.model.UsuarioVIP;
 import javafx.scene.media.Media;
 
@@ -99,11 +100,8 @@ public class TelaAppController {
     
     private Playlist TodasAsMusicas = new Playlist("Todas as músicas");
     private Musica ultimaMusicaTocada = new Musica();
-    //private UsuarioDAO usuarioAtual = UsuarioDAO.getInstance();
-    
-    
-    
-    private Usuario usuarioAtual;
+        
+    private Usuario usuarioAtual = UsuarioDAO.getInstance().getUsuarioAtual();
     
     /**
      * Método inicializado ao carregar a interface gráfica.
@@ -113,15 +111,12 @@ public class TelaAppController {
     public void initialize() {
     	loadSongList();
         loadPlaylistList();
-    	usuarioAtual = UsuarioDAO.getInstance().getUsuarioAtual();
     	
     	if(usuarioAtual != null) {
     	nomeUsuarioAtual.setText(usuarioAtual.getUsername());
     	vipOuComum.setText( usuarioAtual instanceof UsuarioVIP ? "VIP" : "Conta gratuita!");}
     	
     	
-    	System.out.println("Usuario atual: " + usuarioAtual.getUsuarioAtual().getUsername());
-  
     	observablelistaPlaylists = FXCollections.observableArrayList();
     	observablelistaPlaylists.add(TodasAsMusicas);
     	for(Playlist playlist : playlistdao.getListaPlaylists()) {
@@ -193,7 +188,7 @@ public class TelaAppController {
             Playlist novaPlaylist = new Playlist(nomePlaylist);
             observablelistaPlaylists.add(novaPlaylist);
          
-             Diretorio diretorio = new Diretorio(usuarioAtual.getUsuarioAtual().getUsername());
+             Diretorio diretorio = new Diretorio(usuarioAtual.getUsername());
             
             if(diretorio.ehValido()) {
             	File file = new File("./" + diretorio.getNome() + "/playlist_" + nomePlaylist + ".txt");
@@ -240,7 +235,7 @@ public class TelaAppController {
             savePath(musica.getLocal());
             playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
             playlistSelecionada.addMusica(musica);
-            savePath(musica.getLocal(), usuarioAtual.getUsuarioAtual().getUsername(), playlistSelecionada.getTitulo());
+            savePath(musica.getLocal(), usuarioAtual.getUsername(), playlistSelecionada.getTitulo());
             
             if(playlistSelecionada.getTitulo() != "Todas as músicas") {
             	TodasAsMusicas.addMusica(musica);
@@ -263,64 +258,8 @@ public class TelaAppController {
 	
     }
     
-    private void savePath(String path, String folder, String playlistTitle) {
-    	File file = new File("./" + folder + "/playlist_" + playlistTitle + ".txt");
-    	try {
-				FileWriter fileWriter = new FileWriter(file, true);
-				PrintWriter writter = new PrintWriter(fileWriter);
-				writter.printf(path + "\n");
-				writter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	
-	
-    }
-    
-    @FXML
-    private void handleLogoutButtonAction(ActionEvent actionEvent) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText(null);
-        alert.setContentText("Tem certeza que deseja fazer logout?");
-
-        ButtonType okButton = new ButtonType("OK");
-        ButtonType cancelButton = new ButtonType("Cancelar");
-
-        alert.getButtonTypes().setAll(okButton, cancelButton);
-
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.setAlwaysOnTop(true); // Opcional: para manter o diálogo sempre no topo
-
-        alert.showAndWait().ifPresent(response -> {
-            if (response == okButton) {
-                // Realizar o logout
-                UsuarioDAO.getInstance().resetDAO(); // Chamando o método resetDAO para limpar os dados
-                MusicaDAO.getInstance().resetDAO();
-                PlaylistDAO.getInstance().resetDAO();
-                
-                
-                // Fechar a janela atual e voltar para a tela de login
-                Stage currentStage = (Stage) logoutButton.getScene().getWindow();
-                currentStage.close();
-
-                // Abrir a tela de login novamente
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrn/imd/view/TelaLogin.fxml"));
-                Parent root = null;
-				try {
-					root = loader.load();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                Stage loginStage = new Stage();
-                loginStage.setScene(new Scene(root));
-                loginStage.show();
-            }
-        });
-    }
-    
-    /**
+       
+    /*
      * Manipula o evento de clique pra seleção de um novo diretório com músicas.
      *
      * @param event O evento de clique.
@@ -392,7 +331,7 @@ public class TelaAppController {
                     	playlistSelecionada = TodasAsMusicas;
                     }
                     playlistSelecionada.addMusica(musica);
-                    savePath(musica.getLocal(), usuarioAtual.getUsuarioAtual().getUsername(), playlistSelecionada.getTitulo());
+                    savePath(musica.getLocal(), usuarioAtual.getUsername(), playlistSelecionada.getTitulo());
                     if(playlistSelecionada.getTitulo() != "Todas as músicas") {
                     	TodasAsMusicas.addMusica(musica);
                     	
@@ -430,7 +369,7 @@ public class TelaAppController {
     
     private void loadPlaylistList() {
     	    	
-        File folder = new File(usuarioAtual.getUsuarioAtual().getUsername());
+        File folder = new File(usuarioAtual.getUsername());
         File[] files = folder.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String nomeArquivo) {
@@ -497,75 +436,6 @@ public class TelaAppController {
         return nomeSemExtensao;
     }
     
-    
-    private void loadPlaylistList() {
-    	    	
-        File folder = new File(usuarioAtual.getUsuarioAtual().getUsername());
-        File[] files = folder.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String nomeArquivo) {
-                return nomeArquivo.toLowerCase().endsWith(".txt");
-            }
-        });
-
-        if (files != null) {
-            for (File file : files) {
-            	
-               
-            	try {
-			    	InputStream is = new FileInputStream(file); // bytes
-					InputStreamReader isr = new InputStreamReader(is); // char
-					BufferedReader br = new BufferedReader(isr); // string
-					
-					String line = br.readLine();
-					
-					
-					
-					Playlist playlistAtual = new Playlist(extrairNome(file.getName()));
-					while(line != null){
-						File fileSong = new File(line);
-						Musica song = criarMusica(fileSong);
-			            playlistAtual.addMusica(song);
-						line = br.readLine();
-					}
-					playlistdao.adicionarPlaylist(playlistAtual);
-					
-					br.close();
-				} 
-			catch(Exception e){
-				e.printStackTrace();
-			}
-          }
-        }
-    	
-}
-    
-    private String extrairNome(String nome) {
-
-    	// Extrair o nome sem a extensão
-        String nomeSemExtensao = extrairNomeSemExtensao(nome);
-
-        // Extrair apenas a parte desejada
-        String parteDesejada = extrairParteDesejada(nomeSemExtensao);
-
-        return parteDesejada;
-    }
-
-    private String extrairNomeSemExtensao(String nomeArquivo) {
-        int indicePonto = nomeArquivo.lastIndexOf(".");
-        if (indicePonto != -1) {
-            return nomeArquivo.substring(0, indicePonto);
-        }
-        return nomeArquivo;
-    }
-
-    private String extrairParteDesejada(String nomeSemExtensao) {
-        int indiceSublinhado = nomeSemExtensao.indexOf("_");
-        if (indiceSublinhado != -1) {
-            return nomeSemExtensao.substring(indiceSublinhado + 1);
-        }
-        return nomeSemExtensao;
-    }
     
     
     /**
