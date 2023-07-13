@@ -10,14 +10,14 @@ import br.ufrn.imd.model.Playlist;
  */
 public class PlaylistDAO {
     private static PlaylistDAO instance;
-    private ArrayList<Playlist> listaPlaylists;
+    private ArrayList<Playlist> playlistList;
 
     /**
      * Construtor privado da classe PlaylistDAO.
      * Inicializa a lista de playlists.
      */
     private PlaylistDAO() {
-        listaPlaylists = new ArrayList<>();
+        playlistList = new ArrayList<>();
     }
 
     /**
@@ -44,8 +44,8 @@ public class PlaylistDAO {
      *
      * @param playlist A playlist a ser adicionada.
      */
-    public void adicionarPlaylist(Playlist playlist) {
-        listaPlaylists.add(playlist);
+    public void addPlaylist(Playlist playlist) {
+        playlistList.add(playlist);
     }
 
     /**
@@ -53,8 +53,8 @@ public class PlaylistDAO {
      *
      * @param playlist A playlist a ser removida.
      */
-    public void removerPlaylist(Playlist playlist) {
-        listaPlaylists.remove(playlist);
+    public void removePlaylist(Playlist playlist) {
+        playlistList.remove(playlist);
     }
 
     /**
@@ -63,6 +63,6 @@ public class PlaylistDAO {
      * @return A lista de playlists.
      */
     public ArrayList<Playlist> getListaPlaylists() {
-        return listaPlaylists;
+        return playlistList;
     }
 }

@@ -3,9 +3,9 @@ package br.ufrn.imd.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import br.ufrn.imd.dao.UsuarioDAO;
-import br.ufrn.imd.model.Usuario;
-import br.ufrn.imd.model.UsuarioVIP;
+import br.ufrn.imd.dao.UserDAO;
+import br.ufrn.imd.model.User;
+import br.ufrn.imd.model.VipUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,19 +56,19 @@ public class TelaLoginController {
         // Lidar com o evento de clique do botão de login
         String username = usernameField.getText();
         String password = passwordField.getText();
-        UsuarioDAO usuariodao = UsuarioDAO.getInstance();
-        usuariodao.carregaUsuarios();
-        ArrayList<Usuario> listaUsuarios = usuariodao.getListaUsuarios();
+        UserDAO userDAO = UserDAO.getInstance();
+        userDAO.loadUsers();
+        ArrayList<User> usersList = userDAO.getUsersList();
 
-        for (Usuario usuario : listaUsuarios) {
-            if (username.equals(usuario.getUsername()) && password.equals(usuario.getSenha())) {
+        for (User user : usersList) {
+            if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
                 try {
                 	
-                	if(usuario instanceof UsuarioVIP) {
-                		usuariodao.setUsuarioAtual(usuario);
+                	if(user instanceof VipUser) {
+                		userDAO.setCurrentUser(user);
                 	}
                 	else {
-                		usuariodao.setUsuarioAtual(usuario);
+                		userDAO.setCurrentUser(user);
                 	}
                 	
                 	

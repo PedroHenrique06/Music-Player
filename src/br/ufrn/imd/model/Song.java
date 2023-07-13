@@ -5,21 +5,20 @@ import java.io.File;
 /**
  * Classe que representa uma música.
  */
-public class Musica {
-    private String titulo;
-    private int tamanhoSegundos;
-    private Boolean tocando;
-    private Boolean selecionado;
+public class Song {
+    private String title;
+    private Boolean playing;
+    private Boolean selected;
     private String local;
-    private File arquivo;
+    private File file;
 
     /**
      * Obtém o título da música.
      *
      * @return O título da música.
      */
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
     /**
@@ -27,35 +26,17 @@ public class Musica {
      *
      * @param titulo O título da música.
      */
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTitle(String title) {
+        this.title = title;
     }
-
-    /**
-     * Obtém o tamanho da música em segundos.
-     *
-     * @return O tamanho da música em segundos.
-     */
-    public int getTamanhoSegundos() {
-        return tamanhoSegundos;
-    }
-
-    /**
-     * Define o tamanho da música em segundos.
-     *
-     * @param tamanhoSegundos O tamanho da música em segundos.
-     */
-    public void setTamanhoSegundos(int tamanhoSegundos) {
-        this.tamanhoSegundos = tamanhoSegundos;
-    }
-
+    
     /**
      * Verifica se a música está tocando.
      *
      * @return true se a música está tocando, false caso contrário.
      */
-    public Boolean getTocando() {
-        return tocando;
+    public Boolean getPLaying() {
+        return playing;
     }
 
     /**
@@ -63,8 +44,8 @@ public class Musica {
      *
      * @param tocando true se a música está tocando, false caso contrário.
      */
-    public void setTocando(Boolean tocando) {
-        this.tocando = tocando;
+    public void setPLaying(Boolean playing) {
+        this.playing = playing;
     }
 
     /**
@@ -72,8 +53,8 @@ public class Musica {
      *
      * @return true se a música está selecionada, false caso contrário.
      */
-    public Boolean getSelecionado() {
-        return selecionado;
+    public Boolean getSelected() {
+        return selected;
     }
 
     /**
@@ -81,8 +62,8 @@ public class Musica {
      *
      * @param selecionado true se a música está selecionada, false caso contrário.
      */
-    public void setSelecionado(Boolean selecionado) {
-        this.selecionado = selecionado;
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     /**
@@ -108,8 +89,8 @@ public class Musica {
      *
      * @return O arquivo da música.
      */
-    public File getArquivo() {
-        return arquivo;
+    public File getFile() {
+        return file;
     }
 
     /**
@@ -117,7 +98,7 @@ public class Musica {
      *
      * @param arquivo O arquivo da música.
      */
-    public void setArquivo(File arquivo) {
-        this.arquivo = arquivo;
+    public void setArquivo(File file) {
+        this.file = file;
     }
 }

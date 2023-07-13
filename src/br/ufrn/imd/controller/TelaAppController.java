@@ -16,12 +16,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
-import br.ufrn.imd.dao.MusicaDAO;
+import br.ufrn.imd.dao.SongDAO;
 import br.ufrn.imd.dao.PlaylistDAO;
-import br.ufrn.imd.dao.PlaylistDAO;
-import br.ufrn.imd.dao.UsuarioDAO;
-import br.ufrn.imd.model.Diretorio;
-import br.ufrn.imd.model.Musica;
+import br.ufrn.imd.dao.UserDAO;
+import br.ufrn.imd.model.Directory;
+import br.ufrn.imd.model.Song;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,8 +47,8 @@ import javafx.scene.control.TextInputDialog;
 
 
 import br.ufrn.imd.model.Playlist;
-import br.ufrn.imd.model.Usuario;
-import br.ufrn.imd.model.UsuarioVIP;
+import br.ufrn.imd.model.User;
+import br.ufrn.imd.model.VipUser;
 import javafx.scene.media.Media;
 
 import javafx.scene.media.MediaPlayer;
@@ -59,11 +58,10 @@ import javafx.scene.media.MediaPlayer;
  */
 public class TelaAppController {
 	@FXML
-	private Label nomeUsuarioAtual;
+	private Label currentUsername;
 	
 	@FXML
-	private Label vipOuComum;
-	
+	private Label regularOrVip;
 	
     @FXML
     private Button chooseButton;
@@ -86,22 +84,21 @@ public class TelaAppController {
     private File selectedSong;
      
     @FXML
-    private ListView<Musica> musicListView;
+    private ListView<Song> songListView;
     
-
     private MediaPlayer mediaPlayer; 
     
     @FXML
     private ListView<Playlist> playlistListView;
     
     private ObservableList<Playlist> observablelistaPlaylists;
-    private Playlist playlistSelecionada;
-    private PlaylistDAO playlistdao = PlaylistDAO.getInstance();
+    private Playlist selectedPlaylist;
+    private PlaylistDAO playlistDAO = PlaylistDAO.getInstance();
     
-    private Playlist TodasAsMusicas = new Playlist("Todas as músicas");
-    private Musica ultimaMusicaTocada = new Musica();
+    private Playlist AllSongs = new Playlist("Todas as músicas");
+    private Song lastSongPlayed = new Song();
         
-    private Usuario usuarioAtual = UsuarioDAO.getInstance().getUsuarioAtual();
+    private User currentUser = UserDAO.getInstance().getCurrentUser();
     
     /**
      * Método inicializado ao carregar a interface gráfica.
@@ -112,14 +109,14 @@ public class TelaAppController {
     	loadSongList();
         loadPlaylistList();
     	
-    	if(usuarioAtual != null) {
-    	nomeUsuarioAtual.setText(usuarioAtual.getUsername());
-    	vipOuComum.setText( usuarioAtual instanceof UsuarioVIP ? "VIP" : "Conta gratuita!");}
+    	if(currentUser != null) {
+    	currentUsername.setText(currentUser.getUsername());
+    	regularOrVip.setText( currentUser instanceof VipUser ? "VIP" : "Conta gratuita!");}
     	
     	
     	observablelistaPlaylists = FXCollections.observableArrayList();
-    	observablelistaPlaylists.add(TodasAsMusicas);
-    	for(Playlist playlist : playlistdao.getListaPlaylists()) {
+    	observablelistaPlaylists.add(AllSongs);
+    	for(Playlist playlist : playlistDAO.getListaPlaylists()) {
     		observablelistaPlaylists.add(playlist);
     	}
     	
@@ -132,19 +129,19 @@ public class TelaAppController {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getTitulo());
+                    setText(item.getTitle());
                 }
             }
         });
         
-        musicListView.setCellFactory(param -> new ListCell<Musica>() {
+        songListView.setCellFactory(param -> new ListCell<Song>() {
             @Override
-            protected void updateItem(Musica item, boolean empty) {
+            protected void updateItem(Song item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getTitulo());
+                    setText(item.getTitle());
                 }
             }
         });
@@ -160,10 +157,10 @@ public class TelaAppController {
     @FXML
     private void handlePlaylistSelection(MouseEvent event) {
         if (event.getClickCount() == 1) {
-            playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
-            if (playlistSelecionada != null) {
+            selectedPlaylist = playlistListView.getSelectionModel().getSelectedItem();
+            if (selectedPlaylist != null) {
                 // Atualize a lista de músicas exibida na outra ListView com as músicas da playlist selecionada
-            	musicListView.setItems(playlistSelecionada.getObservableListaMusicas());
+            	songListView.setItems(selectedPlaylist.getObservableSongList());
             	
 
             }
@@ -176,22 +173,22 @@ public class TelaAppController {
      * @param event O evento do clique no botão.
      */
     @FXML
-    private void criarPlaylist(ActionEvent event) {
-        if(usuarioAtual instanceof UsuarioVIP) {
+    private void createPlaylist(ActionEvent event) {
+        if(currentUser instanceof VipUser) {
     	TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Criar Playlist");
         dialog.setHeaderText("Digite o nome da nova playlist:");
         dialog.setContentText("Nome:");
 
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(nomePlaylist -> {
-            Playlist novaPlaylist = new Playlist(nomePlaylist);
-            observablelistaPlaylists.add(novaPlaylist);
+        result.ifPresent(playlistName -> {
+            Playlist newPlaylist = new Playlist(playlistName);
+            observablelistaPlaylists.add(newPlaylist);
          
-             Diretorio diretorio = new Diretorio(usuarioAtual.getUsername());
+             Directory directory = new Directory(currentUser.getUsername());
             
-            if(diretorio.ehValido()) {
-            	File file = new File("./" + diretorio.getNome() + "/playlist_" + nomePlaylist + ".txt");
+            if(directory.isValid()) {
+            	File file = new File("./" + directory.getName() + "/playlist_" + playlistName + ".txt");
             	
             	try {
 	            	if(file.createNewFile()) { 
@@ -231,14 +228,14 @@ public class TelaAppController {
 
         File selectedFile = fileChooser.showOpenDialog(((Button) event.getSource()).getScene().getWindow());
         if (selectedFile != null) {
-            Musica musica = criarMusica(selectedFile);
-            savePath(musica.getLocal());
-            playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
-            playlistSelecionada.addMusica(musica);
-            savePath(musica.getLocal(), usuarioAtual.getUsername(), playlistSelecionada.getTitulo());
+            Song song = createSong(selectedFile);
+            savePath(song.getLocal());
+            selectedPlaylist = playlistListView.getSelectionModel().getSelectedItem();
+            selectedPlaylist.addSong(song);
+            savePath(song.getLocal(), currentUser.getUsername(), selectedPlaylist.getTitle());
             
-            if(playlistSelecionada.getTitulo() != "Todas as músicas") {
-            	TodasAsMusicas.addMusica(musica);
+            if(selectedPlaylist.getTitle() != "Todas as músicas") {
+            	AllSongs.addSong(song);
             }
             
         }
@@ -290,8 +287,8 @@ public class TelaAppController {
         alert.showAndWait().ifPresent(response -> {
             if (response == okButton) {
                 // Realizar o logout
-                UsuarioDAO.getInstance().resetDAO(); // Chamando o método resetDAO para limpar os dados
-                MusicaDAO.getInstance().resetDAO();
+                UserDAO.getInstance().resetDAO(); // Chamando o método resetDAO para limpar os dados
+                SongDAO.getInstance().resetDAO();
                 PlaylistDAO.getInstance().resetDAO();
                 
                 
@@ -305,7 +302,6 @@ public class TelaAppController {
 				try {
 					root = loader.load();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 Stage loginStage = new Stage();
@@ -329,19 +325,19 @@ public class TelaAppController {
         File selectedDirectory = directoryChooser.showDialog(((Button) event.getSource()).getScene().getWindow());
         if (selectedDirectory != null) {
             // Percorre todos os arquivos de música dentro do diretório selecionado
-            File[] musicFiles = selectedDirectory.listFiles((dir, name) -> name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".ogg"));
-            if (musicFiles != null) {
-                for (File musicFile : musicFiles) {
-                    Musica musica = criarMusica(musicFile);
-                    savePath(musica.getLocal());
-                    playlistSelecionada = playlistListView.getSelectionModel().getSelectedItem();
-                    if( playlistSelecionada == null) {
-                    	playlistSelecionada = TodasAsMusicas;
+            File[] songFiles = selectedDirectory.listFiles((dir, name) -> name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".ogg"));
+            if (songFiles != null) {
+                for (File songFile : songFiles) {
+                    Song song = createSong(songFile);
+                    savePath(song.getLocal());
+                    selectedPlaylist = playlistListView.getSelectionModel().getSelectedItem();
+                    if( selectedPlaylist == null) {
+                    	selectedPlaylist = AllSongs;
                     }
-                    playlistSelecionada.addMusica(musica);
-                    savePath(musica.getLocal(), usuarioAtual.getUsername(), playlistSelecionada.getTitulo());
-                    if(playlistSelecionada.getTitulo() != "Todas as músicas") {
-                    	TodasAsMusicas.addMusica(musica);
+                    selectedPlaylist.addSong(song);
+                    savePath(song.getLocal(), currentUser.getUsername(), selectedPlaylist.getTitle());
+                    if(selectedPlaylist.getTitle() != "Todas as músicas") {
+                    	AllSongs.addSong(song);
                     	
                     }
                 }
@@ -354,6 +350,18 @@ public class TelaAppController {
      * Carrega a lista de músicas salvas a partir de um arquivo de texto.
      */
     private void loadSongList() {
+    	Directory directory = new Directory("musicas");   	
+    	if(directory.isValid()) {
+    		
+    		File file = new File("./musicas/musicas.txt");
+    		if(!file.exists()) {
+    			try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
+    		
 	    	try {
 		    	InputStream is = new FileInputStream("./musicas/musicas.txt"); // bytes
 				InputStreamReader isr = new InputStreamReader(is); // char
@@ -363,8 +371,8 @@ public class TelaAppController {
 				
 				while(line != null){
 					File fileSong = new File(line);
-					Musica song = criarMusica(fileSong);
-		            TodasAsMusicas.addMusica(song);
+					Song song = createSong(fileSong);
+		            AllSongs.addSong(song);
 					line = br.readLine();
 				}
 				
@@ -373,6 +381,7 @@ public class TelaAppController {
 	    	catch(Exception e){
 	    		e.printStackTrace();
 	    	}
+    	}
   }
     
     /**
@@ -380,11 +389,11 @@ public class TelaAppController {
      */
     private void loadPlaylistList() {
     	    	
-        File folder = new File(usuarioAtual.getUsername());
+        File folder = new File(currentUser.getUsername());
         File[] files = folder.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String nomeArquivo) {
-                return nomeArquivo.toLowerCase().endsWith(".txt");
+            public boolean accept(File dir, String filename) {
+                return filename.toLowerCase().endsWith(".txt");
             }
         });
 
@@ -398,14 +407,14 @@ public class TelaAppController {
 					
 					String line = br.readLine();
 					
-					Playlist playlistAtual = new Playlist(extrairNome(file.getName()));
+					Playlist currentPlaylist = new Playlist(extractName(file.getName()));
 					while(line != null){
 						File fileSong = new File(line);
-						Musica song = criarMusica(fileSong);
-			            playlistAtual.addMusica(song);
+						Song song = createSong(fileSong);
+			            currentPlaylist.addSong(song);
 						line = br.readLine();
 					}
-					playlistdao.adicionarPlaylist(playlistAtual);
+					playlistDAO.addPlaylist(currentPlaylist);
 					
 					br.close();
 				} 
@@ -419,34 +428,37 @@ public class TelaAppController {
     /**
      * Retira a extensão do nome do arquivo.
      */
-    private String extrairNome(String nome) {
+    private String extractName(String name) {
 
     	// Extrair o nome sem a extensão
-        String nomeSemExtensao = extrairNomeSemExtensao(nome);
+        String nameWithoutExtension = extractNameWithoutExtension(name);
 
         // Extrair apenas a parte desejada
-        String parteDesejada = extrairParteDesejada(nomeSemExtensao);
+        String desiredPart = extractDesiredPart(nameWithoutExtension);
 
-        return parteDesejada;
+        return desiredPart;
     }
 
     /**
+     * Retira o ".txt" do nome do arquivo.
+     */
+    private String extractNameWithoutExtension(String filename) {
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex != -1) {
+            return filename.substring(0, dotIndex);
+        }
+        return filename;
+    }
+    
+    /**
      * Retira o "playlist_" do nome do arquivo.
      */
-    private String extrairNomeSemExtensao(String nomeArquivo) {
-        int indicePonto = nomeArquivo.lastIndexOf(".");
-        if (indicePonto != -1) {
-            return nomeArquivo.substring(0, indicePonto);
+    private String extractDesiredPart(String nameWithoutExtension) {
+        int indexUnderlined = nameWithoutExtension.indexOf("_");
+        if (indexUnderlined != -1) {
+            return nameWithoutExtension.substring(indexUnderlined + 1);
         }
-        return nomeArquivo;
-    }
-
-    private String extrairParteDesejada(String nomeSemExtensao) {
-        int indiceSublinhado = nomeSemExtensao.indexOf("_");
-        if (indiceSublinhado != -1) {
-            return nomeSemExtensao.substring(indiceSublinhado + 1);
-        }
-        return nomeSemExtensao;
+        return nameWithoutExtension;
     }
     
     
@@ -457,13 +469,14 @@ public class TelaAppController {
      * @param arquivo O arquivo de áudio selecionado.
      * @return O objeto Musica criado.
      */
-    private Musica criarMusica(File arquivo) {
-        Musica musica = new Musica();
-        musica.setArquivo(arquivo);
-        musica.setTitulo(arquivo.getName());
-        musica.setLocal(arquivo.getAbsolutePath());
-        // Configurar as propriedades da música com base no arquivo selecionado
-        return musica;
+    private Song createSong(File file) {
+    	// Configurar as propriedades da música com base no arquivo selecionado
+        Song song = new Song();
+        song.setArquivo(file);
+        song.setTitle(file.getName());
+        song.setLocal(file.getAbsolutePath());
+        
+        return song;
     }
     
     /**
@@ -472,17 +485,14 @@ public class TelaAppController {
      * @param path O caminho do arquivo de música a ser salvo.
      */
     private void savePath(String path) {
-    	Diretorio diretorio = new Diretorio("musicas");
-    	if(diretorio.ehValido()) {
-				try {
-					FileWriter fileWriter = new FileWriter("./musicas/musicas.txt", true);
-					PrintWriter writter = new PrintWriter(fileWriter);
-					writter.printf(path + "\n");
-					writter.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    	}    		
+		try {
+			FileWriter fileWriter = new FileWriter("./musicas/musicas.txt", true);
+			PrintWriter writter = new PrintWriter(fileWriter);
+			writter.printf(path + "\n");
+			writter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     		
 	}
 
@@ -495,13 +505,13 @@ public class TelaAppController {
     private void handlePlayButtonAction(ActionEvent event) {
     	
     	
-    	Musica selectedMusica = musicListView.getSelectionModel().getSelectedItem();
-    	if(ultimaMusicaTocada == selectedMusica) {
+    	Song selectedSong = songListView.getSelectionModel().getSelectedItem();
+    	if(lastSongPlayed == selectedSong) {
     		mediaPlayer.play();
     	}else {
-        if (selectedMusica != null) {
-            File arquivoMusica = selectedMusica.getArquivo();
-            Media media = new Media(arquivoMusica.toURI().toString());
+        if (selectedSong != null) {
+            File songFile = selectedSong.getFile();
+            Media media = new Media(songFile.toURI().toString());
            
             if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
                 mediaPlayer.stop(); // 
@@ -512,15 +522,15 @@ public class TelaAppController {
 
             mediaPlayer.setOnReady(() -> {
                 mediaPlayer.play();
-                System.out.println("Reproduzindo música: " + arquivoMusica.getAbsolutePath());
+                System.out.println("Reproduzindo música: " + songFile.getAbsolutePath());
             });
 
             mediaPlayer.setOnEndOfMedia(() -> {
                 mediaPlayer.stop();
-                System.out.println("Fim da reprodução da música: " + arquivoMusica.getAbsolutePath());
+                System.out.println("Fim da reprodução da música: " + songFile.getAbsolutePath());
             });            
         	}
-        ultimaMusicaTocada = selectedMusica;
+        lastSongPlayed = selectedSong;
     }
 }
     /**

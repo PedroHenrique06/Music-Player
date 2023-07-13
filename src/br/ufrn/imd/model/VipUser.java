@@ -2,12 +2,13 @@ package br.ufrn.imd.model;
 
 import java.util.ArrayList;
 
+
 /**
  * Classe que representa um usuário VIP, que estende a classe Usuario.
  */
-public class UsuarioVIP extends Usuario {
+public class VipUser extends User {
 
-    private ArrayList<Playlist> listaPlaylists;
+    private ArrayList<Playlist> PlaylistList;
 
     /**
      * Construtor da classe UsuarioVIP.
@@ -15,9 +16,9 @@ public class UsuarioVIP extends Usuario {
      * @param username O nome de usuário do usuário VIP.
      * @param senha    A senha do usuário VIP.
      */
-    public UsuarioVIP(String username, String senha) {
-        super(username, senha);
-        listaPlaylists = new ArrayList<>();
+    public VipUser(String username, String password) {
+        super(username, password);
+        PlaylistList = new ArrayList<>();
     }
 
     /**
@@ -25,8 +26,8 @@ public class UsuarioVIP extends Usuario {
      *
      * @return A lista de playlists do usuário VIP.
      */
-    public ArrayList<Playlist> getListaPlaylists() {
-        return listaPlaylists;
+    public ArrayList<Playlist> getPlaylists() {
+        return PlaylistList;
     }
 
     /**
@@ -34,13 +35,13 @@ public class UsuarioVIP extends Usuario {
      */
     public void addPlaylist(Playlist playlist) {
         // Implemente a lógica para adicionar uma nova playlist
-    	listaPlaylists.add(playlist);
+    	PlaylistList.add(playlist);
     }
 
     /**
      * Exclui uma playlist da lista de playlists do usuário VIP.
      */
-    public void excludePlaylist(Playlist playlist) {
-        listaPlaylists.remove(playlist);
+    public void removePlaylist(Playlist playlist) {
+        PlaylistList.remove(playlist);
     }
 }

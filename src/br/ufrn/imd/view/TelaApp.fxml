@@ -25,7 +25,7 @@
       <AnchorPane prefHeight="311.0" prefWidth="206.0" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="playlistListView" layoutX="3.0" layoutY="56.0" onMouseClicked="#handlePlaylistSelection" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="createPlaylistButton" layoutX="48.0" layoutY="256.0" mnemonicParsing="false" onAction="#criarPlaylist" text="Criar nova playlist" />
+            <Button fx:id="createPlaylistButton" layoutX="48.0" layoutY="256.0" mnemonicParsing="false" onAction="#createPlaylist" text="Criar nova playlist" />
             <Button fx:id="logoutButton" layoutX="3.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleLogoutButtonAction" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0; -fx-text-fill: Blue; -fx-padding: 0; -fx-underline: true;" text="Logout" textFill="#308dff" />
          </children>
       </AnchorPane>
@@ -33,15 +33,15 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="musicListView" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="songListView" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </right>
    <center>
       <AnchorPane prefHeight="224.0" prefWidth="194.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="nomeUsuarioAtual" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="64.0" prefWidth="169.0" style="-fx-text-fill: #0568FF; -fx-font-family: Arial;" text="a" textAlignment="CENTER" wrapText="true" />
-            <Label fx:id="vipOuComum" alignment="CENTER" layoutX="1.0" layoutY="78.0" prefHeight="173.0" prefWidth="193.0" style="-fx-text-fill: #0568FF; -fx-font-family: Arial;" text="VIP" textAlignment="CENTER" textFill="#030300" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+            <Label fx:id="currentUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="64.0" prefWidth="169.0" style="-fx-text-fill: #0568FF; -fx-font-family: Arial;" text="a" textAlignment="CENTER" wrapText="true" />
+            <Label fx:id="regularOrVip" alignment="CENTER" layoutX="1.0" layoutY="78.0" prefHeight="173.0" prefWidth="193.0" style="-fx-text-fill: #0568FF; -fx-font-family: Arial;" text="VIP" textAlignment="CENTER" textFill="#030300" textOverrun="CENTER_ELLIPSIS" wrapText="true">
                <font>
                   <Font size="30.0" />
                </font></Label>

@@ -10,17 +10,17 @@ import java.util.List;
  * Classe que representa uma playlist de músicas.
  */
 public class Playlist {
-    private String titulo;
-    private List<Musica> listaMusicas;
+    private String title;
+    private List<Song> songList;
 
     /**
      * Construtor da classe Playlist.
      *
      * @param titulo O título da playlist.
      */
-    public Playlist(String titulo) {
-        this.titulo = titulo;
-        this.listaMusicas = new ArrayList<>();
+    public Playlist(String title) {
+        this.title = title;
+        this.songList = new ArrayList<>();
     }
 
     /**
@@ -28,8 +28,8 @@ public class Playlist {
      *
      * @return O título da playlist.
      */
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
     /**
@@ -37,8 +37,8 @@ public class Playlist {
      *
      * @return A lista de músicas da playlist.
      */
-    public List<Musica> getListaMusicas() {
-        return listaMusicas;
+    public List<Song> getSongList() {
+        return songList;
     }
 
     /**
@@ -47,8 +47,8 @@ public class Playlist {
      *
      * @return Uma lista observável de músicas da playlist.
      */
-    public ObservableList<Musica> getObservableListaMusicas() {
-        return FXCollections.observableList(listaMusicas);
+    public ObservableList<Song> getObservableSongList() {
+        return FXCollections.observableList(songList);
     }
 
     /**
@@ -56,7 +56,7 @@ public class Playlist {
      *
      * @param musica A música a ser adicionada.
      */
-    public void addMusica(Musica musica) {
-        listaMusicas.add(musica);
+    public void addSong(Song song) {
+        songList.add(song);
     }
 }

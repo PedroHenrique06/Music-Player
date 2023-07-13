@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import br.ufrn.imd.model.Diretorio;
+import br.ufrn.imd.model.Directory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -50,16 +50,18 @@ public class TelaCadastroController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String vip = "false";
-
+        
+        // Verifica se o botão "vip" está selecionado
         if (vipButton.isSelected()) {
             vip = "true";
         }
 
+        // Organiza a linha que será armazenada no arquivo txt
         String userData = username + " : " + password + " : " + vip;
 
-        Diretorio diretorio = new Diretorio("usuarios");
+        Directory directory = new Directory("usuarios");
 
-        if (diretorio.ehValido()) {
+        if (directory.isValid()) {
 
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Resultado da operação");

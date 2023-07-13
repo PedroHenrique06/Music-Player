@@ -3,12 +3,11 @@ package br.ufrn.imd.model;
 /**
  * Classe que representa um usuário.
  */
-public class Usuario {
-    private String nome;
+public class User {
+    private String name;
     private String id;
     private String username;
-    private String senha;
-    private Boolean logado;
+    private String password;
 
     /**
      * Construtor da classe Usuario.
@@ -16,10 +15,9 @@ public class Usuario {
      * @param username O nome de usuário do usuário.
      * @param senha    A senha do usuário.
      */
-    public Usuario(String username, String senha) {
+    public User(String username, String password) {
         this.username = username;
-        this.senha = senha;
-        logado = false;
+        this.password = password;
     }
 
     /**
@@ -27,8 +25,8 @@ public class Usuario {
      *
      * @return O nome do usuário.
      */
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -36,8 +34,8 @@ public class Usuario {
      *
      * @param nome O nome do usuário.
      */
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -81,8 +79,8 @@ public class Usuario {
      *
      * @return A senha do usuário.
      */
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
     /**
@@ -90,25 +88,8 @@ public class Usuario {
      *
      * @param senha A senha do usuário.
      */
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    /**
-     * Verifica se o usuário está logado.
-     *
-     * @return true se o usuário está logado, false caso contrário.
-     */
-    public Boolean getLogado() {
-        return logado;
-    }
-
-    /**
-     * Define o status de logado do usuário.
-     *
-     * @param logado O status de logado do usuário.
-     */
-    public void setLogado(Boolean logado) {
-        this.logado = logado;
-    }
 }
