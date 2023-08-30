@@ -1,6 +1,6 @@
 # Music Player 😍🎧
 ## Descrição
-O Music Player é um aplicativo de reprodução de música que permite aos usuários reproduzir e gerenciar suas músicas favoritas. Com uma interface amigável e recursos intuitivos, o MusicApp oferece uma experiência agradável para os amantes de música.
+O Music Player é um aplicativo de reprodução de música que permite aos usuários reproduzir e gerenciar suas músicas favoritas. Com uma interface amigável e recursos intuitivos, o Music Player oferece uma experiência agradável para os amantes de música.
 
 ## Funcionalidades
 Reprodução de músicas em diferentes formatos (MP3, WAV, etc.).<br>
